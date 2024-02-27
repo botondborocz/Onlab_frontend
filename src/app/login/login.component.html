@@ -1,0 +1,23 @@
+<div style="display: flex; justify-content: center; align-content: center; flex-wrap: wrap; height:100%;">
+<form class="col-3">
+    <h1>Bejelentkezés</h1>
+    <div class="form-group">
+      <label for="userNameInput">Felhasználónév</label>
+      <input type="email" class="form-control" id="userNameInput" aria-describedby="usernameHelp" placeholder="Add meg a felhasználóneved" [formControl]="username">
+    </div>
+    <div class="form-group">
+      <label for="exampleInputPassword1">Jelszó</label>
+      <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Add meg a jelszavad" [formControl]="password">
+    </div>
+    <div class="form-group form-check">
+      <input type="checkbox" class="form-check-input" id="exampleCheck1" [formControl]="isProf">
+      <label class="form-check-label" for="exampleCheck1">Bejelentkezés oktatóként</label>
+    </div>
+    <div>
+      <button type="button" class="btn btn-primary" (click)="login()">Bejelentkezés</button>
+      <button type="button" class="btn btn-secondary m-2"routerLink='/signup'>Regisztráció</button>
+        
+    </div>
+    
+  </form>
+</div>

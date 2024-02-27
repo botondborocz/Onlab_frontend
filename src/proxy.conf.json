@@ -1,0 +1,39 @@
+{
+  "/auth/*/*": {
+    "target": "http://127.0.0.1:8080",
+    "secure": false,
+    "logLevel": "debug"
+  },
+  "/student/*/*": {
+    "target": "http://127.0.0.1:8080",
+    "secure": false,
+    "logLevel": "debug"
+  },
+
+  "/professor/*/*": {
+    "target": "http://127.0.0.1:8080",
+    "secure": false,
+    "logLevel": "debug"
+  },
+
+  "/professor/personaldata":
+  {
+    "target": "http://127.0.0.1:8080",
+    "secure": false,
+    "logLevel": "debug"
+  },
+
+  "/student/*":
+  {
+    "target": "http://127.0.0.1:8080",
+    "secure": false,
+    "logLevel": "debug"
+  },
+
+  "/subject":
+  {
+    "target": "http://127.0.0.1:8080",
+    "secure": false,
+    "logLevel": "debug"
+  }
+}
