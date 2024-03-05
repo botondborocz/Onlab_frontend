@@ -22,23 +22,22 @@ import { AuthService } from '../auth.service';
 export class LoginComponent {
     username:FormControl=new FormControl('')
     password:FormControl=new FormControl('')
-    isProf:FormControl=new FormControl('')
+    isAdmin:FormControl=new FormControl('')
     response:any
     constructor(private snackBar:MatSnackBar,
       private http: HttpClient,
       private router: Router,
       private authService: AuthService){}
-
      login(){
       let url:string
       let routerurl:string
-      if(this.isProf.value){
-        url='/auth/login/professor'
-        routerurl='/professor/personaldata'
+      if(this.isAdmin.value){
+        url='/auth/login/admin'
+        routerurl='/admin'
       }
       else {
-        url='/auth/login/student'
-        routerurl='/student/personaldata'
+        url='/auth/login/user'
+        routerurl='/user'
       }
 
       var body={

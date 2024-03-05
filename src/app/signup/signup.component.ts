@@ -14,7 +14,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 export class SignupComponent {
   username:FormControl=new FormControl('')
   password:FormControl=new FormControl('')
-  isProf:FormControl=new FormControl('')
+  isAdmin:FormControl=new FormControl('')
 
   constructor(private authService:AuthService, 
     private router: Router,
@@ -25,10 +25,10 @@ export class SignupComponent {
     var body={
       username: this.username.value,
       password: this.password.value,
-      isProf:this.isProf.value
+      isAdmin:this.isAdmin.value
     }
     var url:string
-    if(this.isProf.value){
+    if(this.isAdmin.value){
       url='/auth/signup/admin'
     }
     else{

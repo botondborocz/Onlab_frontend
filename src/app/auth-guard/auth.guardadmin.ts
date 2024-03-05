@@ -7,12 +7,12 @@ import { LOCALSTORAGE_TOKEN_KEY, LOCALSTORAGE_TYPE_KEY } from '../app.component'
 @Injectable({
   providedIn: 'root'
 })
-export class AuthGuardProf  implements CanActivate{
+export class AuthGuardAdmin  implements CanActivate{
 
   constructor() { }
 
   canActivate(): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
-    if (localStorage.getItem(LOCALSTORAGE_TOKEN_KEY) === null || localStorage.getItem(LOCALSTORAGE_TYPE_KEY)==='student') {
+    if (localStorage.getItem(LOCALSTORAGE_TOKEN_KEY) === null || localStorage.getItem(LOCALSTORAGE_TYPE_KEY)==='user') {
       return false;
     } else {
       return true;
