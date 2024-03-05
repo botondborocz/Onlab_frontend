@@ -7,13 +7,13 @@ import { LOCALSTORAGE_TOKEN_KEY, LOCALSTORAGE_TYPE_KEY } from '../app.component'
 @Injectable({
   providedIn: 'root'
 })
-export class AuthGuardStud  implements CanActivate{
+export class AuthGuardUser  implements CanActivate{
 
   constructor( ) { }
 
   canActivate(): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
       console.log(localStorage.getItem(LOCALSTORAGE_TOKEN_KEY))
-    if (localStorage.getItem(LOCALSTORAGE_TOKEN_KEY) === null || localStorage.getItem(LOCALSTORAGE_TYPE_KEY)==='professor') {
+    if (localStorage.getItem(LOCALSTORAGE_TOKEN_KEY) === null || localStorage.getItem(LOCALSTORAGE_TYPE_KEY)==='admin') {
       //this.router.navigate(['']);
       console.log(localStorage.getItem(LOCALSTORAGE_TOKEN_KEY));
       console.log(localStorage.getItem(LOCALSTORAGE_TYPE_KEY))

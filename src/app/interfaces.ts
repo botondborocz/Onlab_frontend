@@ -34,7 +34,7 @@ export interface LoginRequest {
 export interface User {
   username: string
   password: string
-  isProf:boolean
+  isAdmin:boolean
 }
 
 /*

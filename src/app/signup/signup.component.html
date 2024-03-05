@@ -1,21 +1,21 @@
 <div style="display: flex; justify-content: center; align-items: center; flex-wrap: wrap; height: 100%;">
 <form class="col-3">
-    <h1>Regisztráció</h1>
+    <h1>Sign Up</h1>
     <div class="form-group">
-      <label for="userNameInput">Felhasználónév</label>
-      <input type="email" class="form-control" id="userNameInput" aria-describedby="usernameHelp" placeholder="Add meg a felhasználóneved" [formControl]="username">
+      <label for="userNameInput">Username</label>
+      <input type="email" class="form-control" id="userNameInput" aria-describedby="usernameHelp" placeholder="Username" [formControl]="username">
     </div>
     <div class="form-group">
-      <label for="exampleInputPassword1">Jelszó</label>
-      <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Add meg a jelszavad" [formControl]="password">
+      <label for="exampleInputPassword1">Password</label>
+      <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Password" [formControl]="password">
     </div>
     <div class="form-group form-check">
-      <input type="checkbox" class="form-check-input" id="exampleCheck1" [formControl]="isProf">
-      <label class="form-check-label" for="exampleCheck1">Regisztráció oktatóként</label>
+      <input type="checkbox" class="form-check-input" id="exampleCheck1" [formControl]="isAdmin">
+      <label class="form-check-label" for="exampleCheck1">Sign up as admin</label>
     </div>
     <div>
-      <button type="button" class="btn btn-primary" (click)="signup()">Regisztráció</button>
-      <button routerLink='/login' class="btn btn-secondary m-3">Bejelentkezés</button>
+      <button type="button" class="btn btn-primary" (click)="signup()">Sign Up</button>
+      <button routerLink='/login' class="btn btn-secondary m-3">Login</button>
     </div>
   </form>
 </div>
