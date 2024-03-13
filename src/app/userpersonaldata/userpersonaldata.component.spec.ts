@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { PersonaldataComponent } from './personaldata.component';
+import { PersonaldataComponent } from './userpersonaldata.component';
 
 describe('PersonaldataComponent', () => {
   let component: PersonaldataComponent;

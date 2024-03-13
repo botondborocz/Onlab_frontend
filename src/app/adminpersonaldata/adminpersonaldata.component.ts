@@ -7,28 +7,23 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import {MatMenuModule} from '@angular/material/menu';
 import { AuthService } from '../auth.service';
-import { CommonModule } from '@angular/common';
 
 @Component({
-  selector: 'app-admindashboard',
+  selector: 'app-adminpersonaldata',
   standalone: true,
-  imports: [MatToolbarModule, RouterOutlet, RouterModule ,MatIconModule,MatButtonModule,CommonModule,MatTabsModule,MatSlideToggleModule,MatMenuModule],
-  templateUrl: './admindashboard.component.html',
-  styleUrl: './admindashboard.component.scss'
+  imports: [MatToolbarModule, RouterOutlet, RouterModule ,MatIconModule,MatButtonModule,MatTabsModule,MatSlideToggleModule,MatMenuModule],
+  templateUrl: './adminpersonaldata.component.html',
+  styleUrl: './adminpersonaldata.component.scss'
 })
-export class AdmindashboardComponent {
+export class AdminpersonaldataComponent {
   constructor(private authService: AuthService, private router:Router){}
 
-    logout(){
-      this.authService.logout();
-      this.router.navigate(['/login']);
-    }
+  logout(){
+    this.authService.logout();
+    this.router.navigate(['/login']);
+  }
 
-    gotomyaccount(){
-      this.router.navigate(['/admin/personaldata']);
-    }
-
-    gohome(){
+  gohome(){
       this.router.navigate(['/admin/home']);
-    }
+  }
 }

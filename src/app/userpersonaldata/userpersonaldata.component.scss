@@ -1,0 +1,70 @@
+.logo {
+  transform: scale(6);
+}
+
+.mat-toolbar {
+background-color: white;
+}
+
+.toolbar-spacer {
+  flex: 3 1 auto
+}
+
+.logo {
+  width: 100px !important;
+  height: 24px !important;
+}
+
+.mat-elevation-z8 {
+  max-width: 800px;
+  margin: 2em 2em;
+}
+
+th.mat-sort-header-sorted {
+  color: black;
+}
+
+
+mat-card {
+    max-width: 500px;
+    margin: 2em 2em;
+    text-align: center;
+    justify-content: center;
+    
+    mat-card-title {
+      font-size:x-large;
+      margin: 1em auto;
+    }
+  
+    mat-card-content {
+      display: flex;
+      justify-content: center;
+      margin: 1em 2em;
+  
+      form {
+        justify-content: center;
+  
+        .mat-mdc-form-field {
+          width: 100%;
+          min-width: 200px;
+        }
+  
+        .input {
+          width: 100%;
+        }
+  
+        .error {
+          padding: 16px;
+          width: 300px;
+          color: white;
+          background-color: red;
+        }
+  
+        .button {
+          display: flex;
+          justify-content: flex-end;
+        }
+      }
+    }
+}
+  

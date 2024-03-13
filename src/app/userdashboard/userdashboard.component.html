@@ -1,39 +1,41 @@
+<nav>
+    <mat-toolbar>
+      <mat-toolbar-row>
+        <a>
+          <button mat-icon-button class="example-icon" aria-label="Example icon-button with menu icon" (click)="gohome()">
+            <mat-icon>home</mat-icon>
+          </button>
+        </a>
+        <span>GoalZone</span>
+        <span class="example-spacer"></span>
+        <a>
+          <button mat-icon-button class="example-icon favorite-icon" aria-label="Example icon-button with heart icon" (click)="gotofavs()">
+            <mat-icon>favorite</mat-icon>
+          </button>
+        </a>
+        <mat-slide-toggle></mat-slide-toggle>
+        <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="Example icon-button with a menu">
+          <mat-icon>more_vert</mat-icon>
+        </button>
+      </mat-toolbar-row>
   
-  <mat-toolbar color="primary">
-    <button mat-icon-button class="example-icon" aria-label="Example icon-button with menu icon">
-      <mat-icon>menu</mat-icon>
-    </button>
-    <span>GoalZone</span>
-    <span class="example-spacer"></span>
-    <button mat-icon-button class="example-icon favorite-icon" aria-label="Example icon-button with heart icon">
-      <mat-icon>favorite</mat-icon>
-    </button>
-    <mat-slide-toggle></mat-slide-toggle>
-    <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="Example icon-button with a menu">
-      <mat-icon>more_vert</mat-icon>
-    </button>
-  </mat-toolbar>
+    </mat-toolbar>
+  </nav>
 
   <mat-menu #menu="matMenu">
-    <button mat-menu-item>
-      <mat-icon>account_box</mat-icon>
-      <span>My Account</span>
-    </button>
-    <button mat-menu-item>
-      <mat-icon>exit_to_app</mat-icon>
-      <span>Log out</span>
-    </button>
-  </mat-menu>
-  
-  <mat-tab-group fitInkBarToContent>
-    <mat-tab label="3 days ago">Matches 1</mat-tab>
-    <mat-tab label="2 days ago">Matches 2</mat-tab>
-    <mat-tab label="Yesterday">Matches 3</mat-tab>
-    <mat-tab label="Today">Matches 4</mat-tab>
-    <mat-tab label="Tomorrow">Matches 5</mat-tab>
-    <mat-tab label="2 days later">Matches 6</mat-tab>
-    <mat-tab label="3 days later">Matches 7</mat-tab>
-  </mat-tab-group>
+    <a>
+      <button mat-menu-item (click)='gotomyaccount()'>
+        <mat-icon>account_box</mat-icon>
+        <span>My Account</span>
+      </button>
+    </a>
 
+    <a>
+      <button mat-menu-item (click)=logout()>
+        <mat-icon>exit_to_app</mat-icon>
+        <span>Log out</span>
+      </button>
+    </a>
+  </mat-menu>
 
 <router-outlet></router-outlet>
