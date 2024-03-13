@@ -44,7 +44,7 @@ export class PersonaldataComponent {
   username:string | null=''
 
   constructor(private http:HttpClient, private snackBar:MatSnackBar){
-    this.url="http://localhost:8080/user/personaldata";
+    this.url="/api/user/personaldata";
     this.username=localStorage.getItem(LOCALSTORAGE_TOKEN_KEY);
     this.getDatafromBackend();
     this.setvalues();
