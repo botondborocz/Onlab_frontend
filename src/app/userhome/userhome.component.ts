@@ -10,25 +10,25 @@ import { AuthService } from '../auth.service';
 import { CommonModule } from '@angular/common';
 
 @Component({
-  selector: 'app-admindashboard',
+  selector: 'app-userhome',
   standalone: true,
   imports: [MatToolbarModule, RouterOutlet, RouterModule ,MatIconModule,MatButtonModule,CommonModule,MatTabsModule,MatSlideToggleModule,MatMenuModule],
-  templateUrl: './admindashboard.component.html',
-  styleUrl: './admindashboard.component.scss'
+  templateUrl: './userhome.component.html',
+  styleUrl: './userhome.component.scss'
 })
-export class AdmindashboardComponent {
+export class UserhomeComponent {
   constructor(private authService: AuthService, private router:Router){}
 
-    logout(){
-      this.authService.logout();
-      this.router.navigate(['/login']);
-    }
+  logout(){
+    this.authService.logout();
+    this.router.navigate(['/login']);
+  }
 
-    gotomyaccount(){
-      this.router.navigate(['/admin/personaldata']);
-    }
+  gotofavs(){
+    this.router.navigate(['/user/favourites']);
+  }
 
-    gohome(){
-      this.router.navigate(['/admin/home']);
-    }
+  gotomyaccount(){
+    this.router.navigate(['/user/personaldata']);
+  }
 }

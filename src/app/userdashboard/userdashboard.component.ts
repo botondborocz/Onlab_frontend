@@ -18,10 +18,21 @@ import { CommonModule } from '@angular/common';
 })
 export class UserdashboardComponent {
   constructor(private authService: AuthService, private router:Router){}
-  myimage:string = "/assets/images/football.jpg";
 
     logout(){
       this.authService.logout();
       this.router.navigate(['/login']);
+    }
+
+    gotofavs(){
+      this.router.navigate(['/user/favourites']);
+    }
+
+    gotomyaccount(){
+      this.router.navigate(['/user/personaldata']);
+    }
+
+    gohome(){
+      this.router.navigate(['/user/home']);
     }
 }

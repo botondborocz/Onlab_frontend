@@ -33,11 +33,11 @@ export class LoginComponent {
       let routerurl:string
       if(this.isAdmin.value){
         url='/auth/login/admin'
-        routerurl='/admin'
+        routerurl='/admin/home'
       }
       else {
         url='/auth/login/user'
-        routerurl='/user'
+        routerurl='/user/home'
       }
 
       var body={
@@ -51,12 +51,12 @@ export class LoginComponent {
         },
        error: (error) =>{
         this.snackBar.open(
-          'Hibás felhasználónév vagy jelszó', 'Bezárás', {duration: 3000, horizontalPosition: 'right', verticalPosition: 'top'}
+          'Incorrect username or password', 'Close', {duration: 3000, horizontalPosition: 'center', verticalPosition: 'top'}
           );
         },
        complete: () => {
         (this.snackBar).open(
-          "Sikeres bejelentkezés", "Bezárás", {duration: 3000, horizontalPosition: 'right', verticalPosition: 'top'}
+          "Successful login", "Close", {duration: 3000, horizontalPosition: 'center', verticalPosition: 'top'}
         );
         this.router.navigate([routerurl]);
        }
