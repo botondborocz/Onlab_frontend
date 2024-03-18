@@ -1,54 +1,57 @@
 import { Component } from '@angular/core';
 import {MatCardModule} from '@angular/material/card';
 import {MatFormFieldModule} from '@angular/material/form-field';
-import { FormControl, FormGroup, ReactiveFormsModule, UntypedFormControl, UntypedFormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule, UntypedFormControl, UntypedFormGroup, Validators } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
 import { LOCALSTORAGE_TOKEN_KEY, LOCALSTORAGE_TYPE_KEY } from '../app.component';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import {MatDatepicker, MatDatepickerModule} from '@angular/material/datepicker';
 import {MatInputModule} from '@angular/material/input';
 import {MatNativeDateModule} from '@angular/material/core';
+import {MatIconModule} from '@angular/material/icon';
+import { Router, RouterModule, RouterOutlet } from '@angular/router';
 
 export interface Profile {
   id:number
-  userName:String;
-  password:String;
-  firstName:String;
-  lastName:String;
+  username:string;
+  password:string;
+  firstName:string;
+  lastName:string;
   dateOfBirth:Date;
 }
 @Component({
   selector: 'app-userpersonaldata',
   standalone: true,
-  imports: [MatCardModule, MatFormFieldModule, ReactiveFormsModule, MatInputModule, MatDatepickerModule, MatNativeDateModule],
+  imports: [MatCardModule, MatFormFieldModule, FormsModule, ReactiveFormsModule, MatInputModule, MatDatepickerModule, MatNativeDateModule, MatIconModule],
   templateUrl: './userpersonaldata.component.html',
   styleUrl: './userpersonaldata.component.scss'
 })
 export class PersonaldataComponent {
-  oldUserName:String="";
-  oldPassWord:String="";
-  oldFirstName:String=""; 
-  oldLastName:String="";
+  hide = true;
+  oldUsername:string="";
+  oldPassword:string="";
+  oldFirstName:string=""; 
+  oldLastName:string="";
   id:number=0;
   oldBirthDate:Date=new Date(2023,1,4);
-
-  profileForm = new UntypedFormGroup({
-    username: new UntypedFormControl(null, [Validators.maxLength(50)]),
-    password: new UntypedFormControl(null, []),
-    firstname: new UntypedFormControl(null, []),
-    lastname: new UntypedFormControl(null, []),
-    datepicker: new FormControl()
-  },)
 
   url:string='';
   username:string | null=''
 
-  constructor(private http:HttpClient, private snackBar:MatSnackBar){
+  constructor(private http:HttpClient, private snackBar:MatSnackBar, private formBuilder:FormBuilder, private router:Router){
     this.url="/api/user/personaldata";
     this.username=localStorage.getItem(LOCALSTORAGE_TOKEN_KEY);
     this.getDatafromBackend();
     this.setvalues();
   }
+
+  profileForm = this.formBuilder.group({
+    username:this.oldUsername,
+    password:this.oldPassword,
+    firstName:this.oldFirstName,
+    lastName:this.oldLastName,
+    datepicker:this.oldBirthDate
+  })
 
   getDatafromBackend(){
     var responseData: Profile;
@@ -59,51 +62,33 @@ export class PersonaldataComponent {
       complete: () => {
         console.log(responseData); 
         this.id=responseData.id;
-        this.oldUserName=responseData.userName;
-        this.oldPassWord=responseData.password;
+        this.oldUsername=responseData.username;
+        this.oldPassword=responseData.password;
         this.oldFirstName=responseData.firstName;
         this.oldLastName=responseData.lastName;}
+        //this.oldBirthDate=responseData.dateOfBirth;}
       });
   }
 
   setvalues(){
     this.profileForm.setValue({
-    username: this.oldUserName,
-    password: this.oldPassWord,
-    firstname: this.oldFirstName,
-    lastname: this.oldLastName, 
+    username: this.oldUsername,
+    password: this.oldPassword,
+    firstName: this.oldFirstName,
+    lastName: this.oldLastName,
     datepicker: this.oldBirthDate
     })
   }
 
-  cancel(){
+  gohome(){
+    this.router.navigate(['/user/home']);
+  }
+
+  show(){
     this.getDatafromBackend();
     this.setvalues();
   }
 
-  dosomething() {
-    var profileData: Profile={
-      id: this.id,
-      userName:"aaa",
-      password:"bbb",
-      firstName:"ccc",
-      lastName:"ddd",
-      dateOfBirth:new Date(2000,2,2)
-    }
-    this.http.post<Profile>(this.url, profileData).subscribe( {
-      next: (response) => console.log(response),
-        error: (error) =>{ 
-          (this.snackBar).open(
-          "Data modification failed", 'Close', {duration: 10000, horizontalPosition: 'center', verticalPosition: 'top'}
-          );
-        },
-        complete: () => {
-          (this.snackBar).open(
-            "Data modification successful", "Close", {duration: 5000, horizontalPosition: 'center', verticalPosition: 'top'}
-          );
-        }
-    });
-  }
 
   save(){
     if (!this.profileForm.valid) {
@@ -111,14 +96,14 @@ export class PersonaldataComponent {
     } 
     var profileData: Profile={
       id: this.id,
-      userName:this.profileForm.value.username!=null ? this.profileForm.value.username : this.oldUserName,
-      password:this.profileForm.value.password!=null ? this.profileForm.value.password : this.oldPassWord,
-      firstName:this.profileForm.value.firstname !=null ? this.profileForm.value.firstname : this.oldFirstName,
-      lastName:this.profileForm.value.lastname !=null ? this.profileForm.value.lastname : this.oldLastName,
+      username:this.profileForm.value.username!=null ? this.profileForm.value.username : this.oldUsername,
+      password:this.profileForm.value.password!=null ? this.profileForm.value.password : this.oldPassword,
+      firstName:this.profileForm.value.firstName !=null ? this.profileForm.value.firstName : this.oldFirstName,
+      lastName:this.profileForm.value.lastName !=null ? this.profileForm.value.lastName : this.oldLastName,
       dateOfBirth:this.profileForm.value.datepicker !=null ? this.profileForm.value.datepicker : this.oldBirthDate,
     }
   console.log(profileData);
-   this.http.post<Profile>(this.url, profileData).subscribe( {
+   this.http.post<Profile>(this.url + '/'+ this.username, profileData).subscribe( {
     next: (response) => console.log(response),
       error: (error) =>{ 
         (this.snackBar).open(

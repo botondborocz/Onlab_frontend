@@ -29,10 +29,10 @@ export class SignupComponent {
     }
     var url:string
     if(this.isAdmin.value){
-      url='/auth/signup/admin'
+      url='/api/auth/signup/admin'
     }
     else{
-      url='/auth/signup/user'
+      url='/api/auth/signup/user'
     }
     this.authService.register(body, url).subscribe({
       next: (response) => console.log(response),

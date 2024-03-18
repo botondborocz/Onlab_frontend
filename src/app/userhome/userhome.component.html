@@ -4,11 +4,84 @@
     <mat-tab label="3 days ago">Matches 1</mat-tab>
     <mat-tab label="2 days ago">Matches 2</mat-tab>
     <mat-tab label="Yesterday">Matches 3</mat-tab>
-    <mat-tab label="Today">Matches 4</mat-tab>
+
+
+    <mat-tab label="Today">
+      <div class="row">
+        <div class="tablecontainer col-3">
+            <div>
+              <h4>Championships</h4>
+            <table mat-table [dataSource]="championships">
+                <ng-container matColumnDef="name">
+                    <th mat-header-cell *matHeaderCellDef> Name </th>
+                    <td mat-cell *matCellDef="let championship"> {{championship.name}} </td>
+                  </ng-container>
+      
+                  <tr mat-header-row *matHeaderRowDef="columnsToDisplayLeft"></tr>
+                <tr mat-row *matRowDef="let myRowData; columns: columnsToDisplayLeft" (click)="updateChampionship(myRowData)"></tr>
+              </table>
+            </div>
+        </div>
+        <div class="col-7">
+          <div>
+            <h4>Games</h4>
+            <table mat-table [dataSource]="games" class="mat-elevation-z8">
+      
+              <ng-container matColumnDef="id">
+                <th mat-header-cell *matHeaderCellDef> ID </th>
+                <td mat-cell *matCellDef="let game"> {{game.id}} </td>
+              </ng-container>
+
+              <ng-container matColumnDef="homeFavourite">
+                <th mat-header-cell *matHeaderCellDef> Favourite </th>
+                <td mat-cell *matCellDef="let game"> 
+                  <mat-icon>favorite_border</mat-icon>
+                </td>
+              </ng-container>
+            
+              <ng-container matColumnDef="homeTeamName">
+                <th mat-header-cell *matHeaderCellDef> Home team </th>
+                <td mat-cell *matCellDef="let game"> {{game.homeTeamName}} </td>
+              </ng-container>
+            
+              <ng-container matColumnDef="homeScore">
+                <th mat-header-cell *matHeaderCellDef> Score </th>
+                <td mat-cell *matCellDef="let game"> {{game.homeScore}} </td>
+              </ng-container>
+            
+              <ng-container matColumnDef="awayScore">
+                <th mat-header-cell *matHeaderCellDef> Score </th>
+                <td mat-cell *matCellDef="let game"> {{game.awayScore}} </td>
+              </ng-container>
+          
+              <ng-container matColumnDef="awayTeamName">
+                <th mat-header-cell *matHeaderCellDef> Away team </th>
+                <td mat-cell *matCellDef="let game"> {{game.awayTeamName}} </td>
+              </ng-container>
+
+              <ng-container matColumnDef="awayFavourite">
+                <th mat-header-cell *matHeaderCellDef> Favourite </th>
+                <td mat-cell *matCellDef="let game"> 
+                  <mat-icon>favorite_border</mat-icon>
+                </td>
+              </ng-container>
+            
+              <tr mat-header-row *matHeaderRowDef="columnsToDisplayRight"></tr>
+              <tr mat-row *matRowDef="let myRowData; columns: columnsToDisplayRight;" (click)="openDialogForGame()"></tr>
+            </table>
+            </div>
+        </div>
+      </div>
+    </mat-tab>
+
+
     <mat-tab label="Tomorrow">Matches 5</mat-tab>
     <mat-tab label="2 days later">Matches 6</mat-tab>
     <mat-tab label="3 days later">Matches 7</mat-tab>
   </mat-tab-group>
   
+
+  
+
   
 <router-outlet></router-outlet>

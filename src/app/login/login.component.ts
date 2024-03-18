@@ -32,11 +32,11 @@ export class LoginComponent {
       let url:string
       let routerurl:string
       if(this.isAdmin.value){
-        url='/auth/login/admin'
+        url='/api/auth/login/admin'
         routerurl='/admin/home'
       }
       else {
-        url='/auth/login/user'
+        url='/api/auth/login/user'
         routerurl='/user/home'
       }
 
