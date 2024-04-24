@@ -1,6 +1,6 @@
-import { Component } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { RouterOutlet } from '@angular/router';
+import {Component} from '@angular/core';
+import {CommonModule} from '@angular/common';
+import {RouterOutlet} from '@angular/router';
 
 @Component({
   selector: 'app-root',
@@ -13,8 +13,8 @@ export class AppComponent {
   title = 'frontend';
 }
 
-export const LOCALSTORAGE_TOKEN_KEY = 'nyilvantartas-auth-token';
-export const LOCALSTORAGE_TYPE_KEY= 'nyilvantartas-type';
+export const LOCALSTORAGE_TOKEN_KEY = 'goalzone-auth-token';
+export const LOCALSTORAGE_TYPE_KEY = 'goalzone-type';
 
 // specify tokenGetter for the angular jwt package
 export function getUserName() {
