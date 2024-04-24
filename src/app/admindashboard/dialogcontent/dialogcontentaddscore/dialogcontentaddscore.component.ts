@@ -45,7 +45,7 @@ export class DialogcontentaddscoreComponent {
   })
 
   getGames(){
-    this.http.get<Game[]>('/api/admin/games').subscribe(
+    this.http.get<Game[]>('/api/general/allgames').subscribe(
       data => {
         console.log(data);
         this.games = data;
@@ -60,8 +60,7 @@ export class DialogcontentaddscoreComponent {
     var gameData: Game={
       id:this.gameForm.value.id,
       homeScore:this.gameForm.value.homeScore,
-      awayScore:this.gameForm.value.awayScore,
-      //dateOfBirth:this.profileForm.value.datepicker !=null ? this.profileForm.value.datepicker : this.oldBirthDate,
+      awayScore:this.gameForm.value.awayScore
     }
     console.log(this.gameForm.value.homeScore);
     this.http.post<Game>('/api/admin/newscore', gameData).subscribe( {

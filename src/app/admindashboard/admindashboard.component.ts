@@ -15,17 +15,8 @@ import { MatDialog, MatDialogModule,} from '@angular/material/dialog';
 import { MatDatepickerInput } from '@angular/material/datepicker';
 import { HttpClient } from '@angular/common/http';
 import {MatTableModule} from '@angular/material/table';
-import {DialogcontentaddgameComponent} from './dialogcontent/dialogcontentaddgame/dialogcontentaddgame.component';
-import {DialogcontentaddscoreComponent} from './dialogcontent/dialogcontentaddscore/dialogcontentaddscore.component';
-
-export interface Game{
-  id:number
-  homeTeamName:string
-  awayTeamName:string
-  homeScore:number
-  awayScore:number
-  championship:string
-}
+import {DialogcontentaddgameComponent} from '../admindashboard/dialogcontent/dialogcontentaddgame/dialogcontentaddgame.component';
+import {DialogcontentaddscoreComponent} from '../admindashboard/dialogcontent/dialogcontentaddscore/dialogcontentaddscore.component';
 
 @Component({
   selector: 'app-admindashboard',
@@ -38,28 +29,14 @@ export interface Game{
   styleUrl: './admindashboard.component.scss'
 })
 export class AdmindashboardComponent {
-  constructor(private authService: AuthService, private router:Router, private dialog:MatDialog, private http:HttpClient){
-    this.getDatafromBackEnd();
-  }
+  constructor(private authService: AuthService, private router:Router, private dialog:MatDialog, private http:HttpClient){}  
 
-  games:Game[]=[];
-  columnsToDisplay=["id", "homeTeamName", "homeScore", "awayScore", "awayTeamName"];
-
-  getDatafromBackEnd(){
-    this.http.get<Game[]>("/api/general/allgames").subscribe(
-      game => {
-        console.log(game);
-        this.games=game
-      }
-    )
-  }
 
   openDialogForScore() {
     const dialogRef = this.dialog.open(DialogcontentaddscoreComponent);
 
     dialogRef.afterClosed().subscribe(result => {
       console.log(`Dialog result: ${result}`);
-      this.getDatafromBackEnd();
     });
   }
 
@@ -68,9 +45,10 @@ export class AdmindashboardComponent {
 
     dialogRef.afterClosed().subscribe(result => {
       console.log(`Dialog result: ${result}`);
-      this.getDatafromBackEnd();
     });
   }
+
+  
 
     logout(){
       this.authService.logout();
