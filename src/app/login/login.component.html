@@ -1,23 +1,42 @@
-<div style="display: flex; justify-content: center; align-content: center; flex-wrap: wrap; height:100%;">
-<form class="col-3">
-    <h1>Login</h1>
-    <div class="form-group">
-      <label for="userNameInput">Username</label>
-      <input type="email" class="form-control" id="userNameInput" aria-describedby="usernameHelp" placeholder="Username" [formControl]="username">
-    </div>
-    <div class="form-group">
-      <label for="exampleInputPassword1">Password</label>
-      <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Password" [formControl]="password">
-    </div>
-    <div class="form-group form-check">
-      <input type="checkbox" class="form-check-input" id="exampleCheck1" [formControl]="isAdmin">
-      <label class="form-check-label" for="exampleCheck1">Login as admin</label>
-    </div>
-    <div>
-      <button type="button" class="btn btn-primary" (click)="login()">Login</button>
-      <button type="button" class="btn btn-secondary m-2"routerLink='/signup'>Sign Up</button>
-        
-    </div>
-    
+<div id="background"
+     style="display: flex; justify-content: center; align-content: center; flex-wrap: wrap; height:100%;">
+  <form [formGroup]="profileForm" class="form-container">
+    <mat-card>
+      <mat-card-header>
+        <mat-card-title>Login</mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <div class="row">
+          <div class="col-md-6">
+            <mat-form-field class="full-width" appearance="outline" [style.width.px]=200>
+              <mat-label>Username</mat-label>
+              <input formControlName="username" matInput>
+            </mat-form-field>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-6">
+            <mat-form-field class="full-width" appearance="outline" [style.width.px]=200>
+              <mat-label>Password</mat-label>
+              <input matInput formControlName="password" [type]="hide ? 'password' : 'text'" (keydown.enter)="login()">
+              <button mat-icon-button matSuffix (click)="hide = !hide" [attr.aria-label]="'Hide password'"
+                      [attr.aria-pressed]="hide">
+                <mat-icon>{{ hide ? 'visibility_off' : 'visibility' }}</mat-icon>
+              </button>
+            </mat-form-field>
+          </div>
+        </div>
+        <div class="form-group form-check">
+          <input formControlName="isAdmin" type="checkbox" class="form-check-input" id="exampleCheck1">
+          <label class="form-check-label" for="exampleCheck1">Login as admin</label>
+        </div>
+        <div>
+          <button id="loginbutton" type="button" class="btn btn-primary" (click)="login()">Login</button>
+          <button type="button" class="btn btn-secondary m-2" routerLink='/signup'>Sign Up</button>
+        </div>
+      </mat-card-content>
+    </mat-card>
   </form>
 </div>
+
+
