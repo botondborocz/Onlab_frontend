@@ -1,27 +1,56 @@
 .example-icon {
-    padding: 0 14px;
-  }
-  .example-spacer {
-    flex: 1 1 auto;
-  }
-  
-  .mat-toolbar.mat-primary {
-    background: #023164;
-    color: #fff;
-  }
-  
-  .mat-toolbar{
-    background-color: #023164;
-    color: #fff;
-    display: flex;
-    justify-content: center;
-  }
-  
-  .mat-toolbar a{
-    //display: inline;
-    margin-right: 10px;
-  }
-  
-  .mat-toolbar btn{
-    width: 100%;
-  }
+  padding: 0 14px;
+}
+
+.example-spacer {
+  flex: 1 1 auto;
+}
+
+.mat-toolbar.mat-primary {
+  //background: #023164;
+  //color: #fff;
+}
+
+.mat-toolbar {
+  //background-color: #023164;
+  //color: #fff;
+  display: flex;
+  justify-content: center;
+}
+
+.mat-toolbar a {
+  //display: inline;
+  margin-right: 10px;
+}
+
+.mat-toolbar btn {
+  width: 100%;
+}
+
+.green {
+  background-color: #023164;
+}
+
+.mat-column-id {
+  flex: 0 0 100px
+}
+
+.mat-column-homeTeamName {
+  flex: 0 0 300px
+}
+
+.mat-column-awayTeamName {
+  flex: 0 0 300px
+}
+
+.mat-column-homeScore {
+  flex: 0 0 10px
+}
+
+.mat-column-awayScore {
+  flex: 0 0 10px
+}
+
+.mat-column-button {
+  flex: 0 0 10px
+}

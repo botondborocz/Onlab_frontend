@@ -1,27 +1,32 @@
 .example-icon {
   padding: 0 14px;
 }
+
 .example-spacer {
   flex: 1 1 auto;
 }
 
 .mat-toolbar.mat-primary {
-  background: #023164;
-  color: #fff;
+  //background: #023164;
+  //color: #fff;
 }
 
-.mat-toolbar{
-  background-color: #023164;
-  color: #fff;
+.mat-toolbar {
+  //background-color: #023164;
+  //color: #fff;
   display: flex;
   justify-content: center;
 }
 
-.mat-toolbar a{
+.mat-toolbar a {
   //display: inline;
   margin-right: 10px;
 }
 
-.mat-toolbar btn{
+.mat-toolbar btn {
   width: 100%;
+}
+
+.mat-tab-group {
+  background-color: red;
 }
