@@ -136,7 +136,7 @@ export class DialogcontentaddgoalscorersComponent {
   }
 
   save() {
-    console.log(this.homeScorers[0].id);
+    //console.log(this.homeScorers[0].id);
     var scorerData: NewScorer = {
       gameId: this.data.gameId,
       homeScorerId: this.homeScorerForm.value.homeScorerId,

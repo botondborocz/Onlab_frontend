@@ -12,6 +12,7 @@ import {MatTooltipModule} from '@angular/material/tooltip';
 import {MatButtonModule} from '@angular/material/button';
 import {MatDialogModule} from '@angular/material/dialog';
 import {MatCardModule} from '@angular/material/card';
+import {provideAnimations} from "@angular/platform-browser/animations";
 
 export interface Game {
   id: number
@@ -48,7 +49,8 @@ export interface Championship {
     MatDatepickerModule, MatNativeDateModule,
     MatDialogModule, MatCardModule],
   templateUrl: './dialogcontentaddgame.component.html',
-  styleUrl: './dialogcontentaddgame.component.scss'
+  styleUrl: './dialogcontentaddgame.component.scss',
+  providers: [provideAnimations()]
 })
 export class DialogcontentaddgameComponent {
   id: number = 0;
