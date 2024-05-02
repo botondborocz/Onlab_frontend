@@ -27,10 +27,6 @@
   width: 100%;
 }
 
-.selected {
-  background-color: #023164;
-}
-
 .mat-column-id {
   flex: 0 0 30%
 }
@@ -49,4 +45,44 @@ body {
 
 .button_color {
   color: #1df239;
+}
+
+.grid-container-light {
+  display: grid;
+  grid-template-areas:
+        'left right right right right right right right right right right right';
+  gap: 0px;
+  padding: 10px;
+  background-color: #ffffff;
+}
+
+.grid-container-dark {
+  display: grid;
+  grid-template-areas:
+        'left right right right right right right right right right right right';
+  gap: 0px;
+  padding: 10px;
+  background-color: #282828;
+}
+
+.grid-container > div {
+  text-align: center;
+  padding: 20px 0;
+  font-size: 30px;
+}
+
+.button-dark {
+  color: #282828 !important;
+}
+
+.button-light {
+  color: #ffffff !important;
+}
+
+.selected-light {
+  background-color: #023164 !important;
+}
+
+.selected-dark {
+  background-color: #fdfd96 !important;
 }

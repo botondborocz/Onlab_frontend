@@ -1,4 +1,4 @@
-import {AfterViewInit, ChangeDetectorRef, Component, ViewEncapsulation} from '@angular/core';
+import {ChangeDetectorRef, Component, ViewEncapsulation} from '@angular/core';
 import {Router, RouterModule, RouterOutlet} from '@angular/router';
 import {MatToolbarModule} from '@angular/material/toolbar';
 import {MatTabsModule} from '@angular/material/tabs';
@@ -47,7 +47,7 @@ export interface Championship {
   encapsulation: ViewEncapsulation.None,
   providers: [provideAnimations()]
 })
-export class UserhomeComponent implements AfterViewInit {
+export class UserhomeComponent {
   isDarkMode: boolean;
   championships: Championship[] = [];
   selectedChampionshipId: number = -1;
@@ -77,13 +77,13 @@ export class UserhomeComponent implements AfterViewInit {
   }
 
   ngAfterViewInit(): void {
-    this.ref.detectChanges();
+    //this.ref.detectChanges();
   }
 
   public toggleTheme() {
     this.isDarkMode = !this.isDarkMode;
     this.themeService.setDarkMode(this.isDarkMode);
-    this.ref.detectChanges();
+    //this.ref.detectChanges();
   }
 
   public changeHomeFavorite(game: Game) {
@@ -204,6 +204,5 @@ export class UserhomeComponent implements AfterViewInit {
   gohome() {
     this.router.navigate(['/user/home']);
   }
-
 
 }
