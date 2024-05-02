@@ -11,6 +11,9 @@
             <mat-form-field class="full-width" appearance="outline" [style.width.px]=200>
               <mat-label>Username</mat-label>
               <input formControlName="username" matInput (keydown.enter)="signup()">
+              @if (profileForm.controls['username'].errors?.['required']) {
+                <mat-error>Field is <strong>required</strong></mat-error>
+              }
             </mat-form-field>
           </div>
         </div>
@@ -18,12 +21,31 @@
           <div class="col-md-6">
             <mat-form-field class="full-width" appearance="outline" [style.width.px]=200>
               <mat-label>Password</mat-label>
-              <input matInput formControlName="password" [type]="hide ? 'password' : 'text'"
+              <input matInput formControlName="password"
+                     [type]="hide ? 'password' : 'text'"
                      (keydown.enter)="signup()">
               <button mat-icon-button matSuffix (click)="hide = !hide" [attr.aria-label]="'Hide password'"
                       [attr.aria-pressed]="hide">
                 <mat-icon>{{ hide ? 'visibility_off' : 'visibility' }}</mat-icon>
               </button>
+              @if (profileForm.controls['password'].errors?.['required']) {
+                <mat-error>Field is <strong>required</strong></mat-error>
+              }
+            </mat-form-field>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-6">
+            <mat-form-field class="full-width" appearance="outline" [style.width.px]=200>
+              <mat-label>Confirm password</mat-label>
+              <input formControlName="confirmPassword" matInput [errorStateMatcher]="matcher"
+                     (keydown.enter)="signup()">
+              @if (profileForm.errors?.['match_error'] && !profileForm.controls['confirmPassword'].errors?.['required']) {
+                <mat-error>Passwords do not match</mat-error>
+              }
+              @if (profileForm.controls['confirmPassword'].errors?.['required']) {
+                <mat-error>Field is <strong>required</strong></mat-error>
+              }
             </mat-form-field>
           </div>
         </div>
@@ -32,6 +54,9 @@
             <mat-form-field class="full-width" appearance="outline" [style.width.px]=200>
               <mat-label>First Name</mat-label>
               <input formControlName="firstName" matInput>
+              @if (profileForm.controls['firstName'].errors?.['required']) {
+                <mat-error>Field is <strong>required</strong></mat-error>
+              }
             </mat-form-field>
           </div>
         </div>
@@ -40,6 +65,9 @@
             <mat-form-field class="full-width" appearance="outline" [style.width.px]=200>
               <mat-label>Last Name</mat-label>
               <input formControlName="lastName" matInput>
+              @if (profileForm.controls['lastName'].errors?.['required']) {
+                <mat-error>Field is <strong>required</strong></mat-error>
+              }
             </mat-form-field>
           </div>
         </div>
