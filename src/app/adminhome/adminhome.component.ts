@@ -10,7 +10,7 @@ import {AuthService} from '../auth.service';
 import {CommonModule} from '@angular/common';
 import {HttpClient} from '@angular/common/http';
 import {MatDialog,} from '@angular/material/dialog';
-import {MatTableModule} from '@angular/material/table';
+import {MatTableDataSource, MatTableModule} from '@angular/material/table';
 import {
   DialogcontentaddgoalscorersComponent
 } from '../admindashboard/dialogcontent/dialogcontentaddgoalscorers/dialogcontentaddgoalscorers.component';
@@ -39,7 +39,7 @@ export class AdminhomeComponent {
     this.getDatafromBackEnd();
   }
 
-  games: Game[] = [];
+  games = new MatTableDataSource<Game>();
   columnsToDisplay = ["id", "date", "homeTeamName", "homeScore", "awayScore", "awayTeamName", "button"];
 
 
@@ -47,10 +47,11 @@ export class AdminhomeComponent {
     this.http.get<Game[]>("/api/general/allgames").subscribe(
       game => {
         console.log(game);
-        this.games = game
+        this.games.data = game
       }
     )
   }
+
 
   openDialogForGoalscorers(game: Game) {
     const dialogRef = this.dialog.open(DialogcontentaddgoalscorersComponent, {
