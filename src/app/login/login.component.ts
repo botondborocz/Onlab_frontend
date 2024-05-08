@@ -10,7 +10,6 @@ import {MatFormField, MatLabel, MatSuffix} from "@angular/material/form-field";
 import {MatInput} from "@angular/material/input";
 import {MatIcon} from "@angular/material/icon";
 import {MatIconButton} from "@angular/material/button";
-import {provideAnimations} from "@angular/platform-browser/animations";
 import {MatCard, MatCardContent, MatCardHeader, MatCardTitle} from "@angular/material/card";
 
 @Component({
@@ -19,7 +18,7 @@ import {MatCard, MatCardContent, MatCardHeader, MatCardTitle} from "@angular/mat
   imports: [RouterModule, ReactiveFormsModule, MatFormField, MatInput, MatLabel, MatIcon, MatIconButton, MatSuffix, MatCardTitle, MatCard, MatCardHeader, MatCardContent],
   templateUrl: './login.component.html',
   styleUrl: './login.component.scss',
-  providers: [provideAnimations()]
+  providers: []
 })
 export class LoginComponent {
   //username: FormControl = new FormControl('')
@@ -61,6 +60,7 @@ export class LoginComponent {
         console.log(response)
         localStorage.setItem(LOCALSTORAGE_TOKEN_KEY, response.username);
         localStorage.setItem(LOCALSTORAGE_TYPE_KEY, response.type);
+        console.log(response.type)
       },
       error: (error) => {
         this.snackBar.open(

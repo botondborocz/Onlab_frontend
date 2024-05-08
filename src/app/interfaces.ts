@@ -1,4 +1,3 @@
-
 /*
 Interface for the Refresh Token (can look different, based on your backend api)
 */
@@ -34,7 +33,7 @@ export interface LoginRequest {
 export interface User {
   username: string
   password: string
-  isAdmin:boolean
+  isAdmin: boolean
 }
 
 /*
@@ -51,4 +50,29 @@ Interface for the Register Response (can look different, based on your backend a
 export interface RegisterResponse {
   status: number;
   message: string;
+}
+
+export interface Game {
+  id: number
+  homeTeamName: string
+  awayTeamName: string
+  homeTeamId: number
+  awayTeamId: number
+  homeScore: number
+  awayScore: number
+  champId: number
+  date: Date
+}
+
+export interface Championship {
+  id: number
+  name: string
+  selected: boolean
+}
+
+export interface Team {
+  id: number
+  teamName: string
+  championshipName: string
+  selected: boolean
 }

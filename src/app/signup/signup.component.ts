@@ -19,7 +19,6 @@ import {MatFormField, MatFormFieldModule, MatLabel, MatSuffix} from "@angular/ma
 import {MatInput} from "@angular/material/input";
 import {MatIcon} from "@angular/material/icon";
 import {MatIconButton} from "@angular/material/button";
-import {provideAnimations} from "@angular/platform-browser/animations";
 import {ErrorStateMatcher} from "@angular/material/core";
 import {JsonPipe} from "@angular/common";
 
@@ -29,7 +28,7 @@ import {JsonPipe} from "@angular/common";
   imports: [RouterModule, ReactiveFormsModule, MatCard, MatCardContent, MatCardHeader, MatCardTitle, MatFormField, MatInput, MatLabel, MatIcon, MatIconButton, MatSuffix, MatFormFieldModule, JsonPipe],
   templateUrl: './signup.component.html',
   styleUrl: './signup.component.scss',
-  providers: [provideAnimations()]
+  providers: []
 })
 export class SignupComponent {
   //username: FormControl = new FormControl('')

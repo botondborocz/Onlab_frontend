@@ -1,6 +1,6 @@
 <div id="background"
      style="display: flex; justify-content: center; align-content: center; flex-wrap: wrap; height:100%;">
-  <form [formGroup]="profileForm" class="form-container">
+  <form [formGroup]="profileForm" class="form-container" (keydown.enter)="$event.preventDefault()">
     <mat-card>
       <mat-card-header>
         <mat-card-title>Login</mat-card-title>
