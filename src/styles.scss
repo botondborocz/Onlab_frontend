@@ -14,8 +14,9 @@
 $frontend-primary: mat.define-palette(mat.$indigo-palette);
 $frontend-accent: mat.define-palette(mat.$pink-palette, A200, A100, A400);
 
+
 // The warn palette is optional (defaults to red).
-$frontend-warn: mat.define-palette(mat.$red-palette);
+$frontend-warn: mat.define-palette(mat.$red-palette, A200, A100, A400);
 
 // Create the theme object. A theme consists of configurations for individual
 // theming systems such as "color" or "typography".
@@ -58,10 +59,49 @@ body {
   --mat-tab-header-active-focus-indicator-color: #fdfd96;
   --mat-tab-header-active-hover-label-text-color: #fdfd96;
   --mat-tab-header-active-hover-indicator-color: #fdfd96;
+  --mat-tab-header-active-ripple-color: #ffffb9;
+  --mat-tab-header-inactive-ripple-color: #ffffb9;
+  --mdc-tab-indicator-active-indicator-color: #fdfd96;
   --mat-toolbar-container-background-color: #fdfd96;
   --mat-toolbar-container-text-color: #000000;
+  --mdc-outlined-text-field-focus-outline-color: #fdfd96;
+  --mdc-outlined-text-field-caret-color: #ffffff;
+  --mdc-outlined-text-field-outline-color: #ffffff;
+  --mdc-outlined-text-field-hover-outline-color: #cbcb97;
+  --mdc-outlined-text-field-input-text-color: #ffffff;
+  --mat-select-enabled-arrow-color: #ffffff;
+  --mat-select-focused-arrow-color: #fdfd96;
+  --mat-option-label-text-color: #ffffff;
+  --mat-option-selected-state-label-text-color: #fdfd96;
+  --mat-option-selected-state-layer-color: #282828;
   overflow: hidden;
+
+
+  --mat-datepicker-calendar-container-background-color: #282828;
+  --mat-datepicker-toggle-icon-color: #ffffff;
+  --mat-datepicker-toggle-active-state-icon-color: #fdfd96;
+  --mat-datepicker-calendar-date-text-color: #ffffff;
+  --mat-datepicker-calendar-date-selected-state-background-color: #fdfd96;
+  --mat-datepicker-calendar-date-selected-state-text-color: #000000;
+  --mat-datepicker-calendar-header-text-color: #ffffff;
+  --mat-datepicker-calendar-body-label-text-color: #ffffff;
+  --mat-datepicker-calendar-navigation-button-icon-color: #ffffff;
+  --mat-datepicker-calendar-period-button-text-color: #ffffff;
+  --mat-datepicker-calendar-period-button-icon-color: #ffffff;
+  --mat-datepicker-calendar-date-today-outline-color: #fdfd96;
+  --mat-datepicker-calendar-date-hover-state-background-color: #858547;
+
+
+  -moz-transition: 0.5s;
+  -o-transition: 0.5s;
+  -webkit-transition: 0.5s;
+
+
+  .mat-primary {
+    --mat-minimal-pseudo-checkbox-selected-checkmark-color: #fdfd96;
+  }
 }
+
 
 /* Light Theme Styles */
 .light-theme {
@@ -73,5 +113,158 @@ body {
   --mat-tab-header-active-label-text-color: #023164;
   --mat-toolbar-container-background-color: #023164;
   --mat-toolbar-container-text-color: #ffffff;
+  --mdc-outlined-text-field-focus-outline-color: #023164;
+  --mdc-outlined-text-field-caret-color: #023164;
   overflow-x: hidden;
+
+
+  -moz-transition: 0.5s;
+  -o-transition: 0.5s;
+  -webkit-transition: 0.5s;
 }
+
+.custom-transition {
+  transition: all 0.5s ease;
+}
+
+.example-icon {
+  padding: 0 14px;
+}
+
+.example-spacer {
+  flex: 1 1 auto;
+}
+
+.mat-toolbar {
+  display: flex;
+  justify-content: center;
+}
+
+.mat-toolbar a {
+  margin-right: 10px;
+}
+
+.mat-toolbar btn {
+  width: 100%;
+}
+
+.form-field-style {
+  width: 250px;
+  margin: 10px;
+}
+
+.selected-light {
+  background-color: #023164 !important;
+}
+
+.selected-dark {
+  background-color: #fdfd96 !important;
+}
+
+.selected-button-dark {
+  color: #000000 !important;
+}
+
+.selected-button-light {
+  color: #ffffff !important;
+}
+
+.text-for-light-mode {
+  color: #000000 !important;
+}
+
+.text-for-dark-mode {
+  color: #ffffff !important;
+}
+
+.save-button-light {
+  background-color: #023164 !important;
+  color: #ffffff !important;
+  transition: all 0.5s ease !important;
+  margin: 5px !important;
+}
+
+.save-button-dark {
+  background-color: #fdfd96 !important;
+  color: #000000 !important;
+  transition: all 0.5s ease !important;
+  margin: 5px !important;
+}
+
+.other-button-light {
+  background-color: #ffffff !important;
+  color: #000000 !important;
+  transition: all 0.5s ease !important;
+  margin: 5px !important;
+}
+
+.other-button-dark {
+  background-color: #282828 !important;
+  color: #ffffff !important;
+  transition: all 0.5s !important;
+  margin: 5px !important;
+}
+
+html .mat-mdc-slide-toggle.mat-accent {
+  --mdc-switch-selected-focus-state-layer-color: #023164;
+  --mdc-switch-selected-handle-color: #023164;
+  --mdc-switch-selected-hover-state-layer-color: #023164;
+  --mdc-switch-selected-pressed-state-layer-color: #023164;
+  --mdc-switch-selected-focus-handle-color: #023164;
+  --mdc-switch-selected-hover-handle-color: #023164;
+  --mdc-switch-selected-pressed-handle-color: #023164;
+  --mdc-switch-selected-focus-track-color: #285bff;
+  --mdc-switch-selected-hover-track-color: #285bff;
+  --mdc-switch-selected-pressed-track-color: #285bff;
+  --mdc-switch-selected-track-color: #285bff;
+}
+
+.grid-container-light {
+  display: grid;
+  grid-template-areas:
+        'left right right right right right right right right right right right';
+  gap: 0px;
+  padding: 10px;
+  background-color: #ffffff;
+  transition: all 0.5s ease;
+}
+
+.grid-container-dark {
+  display: grid;
+  grid-template-areas:
+        'left right right right right right right right right right right right';
+  gap: 0px;
+  padding: 10px;
+  background-color: #282828;
+  transition: all 0.5s ease;
+}
+
+.grid-container > div {
+  text-align: center;
+  padding: 20px 0;
+  font-size: 30px;
+}
+
+.mat-select-color-dark {
+  background: #282828 !important;
+  color: red !important;
+}
+
+
+// Custom yellow palette
+$my-yellow: (
+  50: #fffff2,
+  100: #fefee0,
+  200: #fefecb,
+  300: #fefeb6,
+  400: #fdfda6,
+  500: #fdfd96,
+  600: #fdfd8e,
+  700: #fcfc83,
+  800: #fcfc79,
+  900: #fcfc68,
+  A100: #ffffff,
+  A200: #ffffff,
+  A400: #ffffff,
+  A700: #ffffed
+);
