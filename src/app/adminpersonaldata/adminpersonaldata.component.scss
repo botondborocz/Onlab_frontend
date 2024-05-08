@@ -1,71 +1,72 @@
-.example-icon {
-    padding: 0 14px;
-  }
-  .example-spacer {
-    flex: 1 1 auto;
-  }
-  
-  .mat-toolbar.mat-primary {
-    background: #023164;
-    color: #fff;
-  }
-  
-  .mat-toolbar{
-    background-color: #023164;
-    color: #fff;
-    display: flex;
-    justify-content: center;
-  }
-  
-  .mat-toolbar a{
-    //display: inline;
-    margin-right: 10px;
-  }
-  
-  .mat-toolbar btn{
-    width: 100%;
+
+.mat-toolbar {
+  display: flex;
+  justify-content: center;
+}
+
+.mat-toolbar a {
+  //display: inline;
+  margin-right: 10px;
+}
+
+.mat-toolbar btn {
+  width: 100%;
+}
+
+.mat-card-light {
+  text-align: center;
+  justify-content: center;
+  background-color: #ffffff !important;
+  transition: all 0.5s ease;
+}
+
+.mat-card-dark {
+  text-align: center;
+  justify-content: center;
+  background-color: #282828 !important;
+  transition: all 0.5s ease;
+}
+
+mat-card {
+  //max-width: 500px;
+  margin: 2em 2em;
+  text-align: center;
+  justify-content: center;
+
+  mat-card-title {
+    font-size: x-large;
+    margin: 1em auto;
   }
 
-  mat-card {
-    //max-width: 500px;
-    margin: 2em 2em;
-    text-align: center;
+  mat-card-content {
+    display: flex;
     justify-content: center;
-    
-    mat-card-title {
-      font-size:x-large;
-      margin: 1em auto;
-    }
-  
-    mat-card-content {
-      display: flex;
+    margin: 1em 2em;
+
+    form {
       justify-content: center;
-      margin: 1em 2em;
-  
-      form {
-        justify-content: center;
-  
-        .mat-mdc-form-field {
-          width: 100%;
-          min-width: 200px;
-        }
-  
-        .input {
-          width: 100%;
-        }
-  
-        .error {
-          padding: 16px;
-          width: 300px;
-          color: white;
-          background-color: red;
-        }
-  
-        .button {
-          display: flex;
-          justify-content: flex-end;
-        }
+
+      .mat-mdc-form-field {
+        width: 100%;
+        min-width: 200px;
+      }
+
+      .input {
+        width: 100%;
+      }
+
+      .error {
+        padding: 16px;
+        width: 300px;
+        color: white;
+        background-color: red;
+      }
+
+      .button {
+        display: flex;
+        justify-content: flex-end;
       }
     }
-    
+  }
+
 }

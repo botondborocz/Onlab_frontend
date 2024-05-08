@@ -1,4 +1,4 @@
-import {Component} from '@angular/core';
+import {Component, ViewEncapsulation} from '@angular/core';
 import {Router, RouterModule, RouterOutlet} from '@angular/router';
 import {MatToolbarModule} from '@angular/material/toolbar';
 import {MatTabsModule} from '@angular/material/tabs';
@@ -10,10 +10,21 @@ import {AuthService} from '../auth.service';
 import {CommonModule} from '@angular/common';
 import {HttpClient} from '@angular/common/http';
 import {MatDialog,} from '@angular/material/dialog';
-import {MatTableModule} from '@angular/material/table';
+import {MatTableDataSource, MatTableModule} from '@angular/material/table';
 import {
   DialogcontentaddgoalscorersComponent
 } from '../admindashboard/dialogcontent/dialogcontentaddgoalscorers/dialogcontentaddgoalscorers.component';
+import {MatDatepicker, MatDatepickerInput, MatDatepickerToggle} from "@angular/material/datepicker";
+import {MatNativeDateModule} from '@angular/material/core';
+import {MatFormField, MatSuffix} from "@angular/material/form-field";
+import {MatInput} from "@angular/material/input";
+import {
+  DialogcontentaddscoreComponent
+} from '../admindashboard/dialogcontent/dialogcontentaddscore/dialogcontentaddscore.component';
+import {ThemeService} from "../theme.service";
+import {
+  DialogcontentaddgameComponent
+} from "../admindashboard/dialogcontent/dialogcontentaddgame/dialogcontentaddgame.component";
 
 export interface Game {
   id: number
@@ -30,26 +41,41 @@ export interface Game {
   standalone: true,
   imports: [MatToolbarModule, RouterOutlet, RouterModule,
     MatIconModule, MatButtonModule, CommonModule, MatTabsModule,
-    MatSlideToggleModule, MatMenuModule, MatTableModule],
+    MatSlideToggleModule, MatMenuModule, MatTableModule,
+    MatDatepicker, MatDatepickerInput, MatDatepickerToggle, MatFormField, MatInput, MatSuffix, MatNativeDateModule],
   templateUrl: './adminhome.component.html',
-  styleUrl: './adminhome.component.scss'
+  styleUrl: './adminhome.component.scss',
+  encapsulation: ViewEncapsulation.None,
+  providers: []
 })
 export class AdminhomeComponent {
-  constructor(private authService: AuthService, private router: Router, private dialog: MatDialog, private http: HttpClient) {
+  games = new MatTableDataSource<Game>();
+  columnsToDisplay = ["date", "homeTeamName", "homeScore", "awayScore", "awayTeamName", "score", "goalscorers"];
+  isDarkMode: boolean;
+
+  constructor(private themeService: ThemeService, private authService: AuthService, private router: Router, private dialog: MatDialog, private http: HttpClient) {
+    this.isDarkMode = this.themeService.isDarkMode();
     this.getDatafromBackEnd();
   }
-
-  games: Game[] = [];
-  columnsToDisplay = ["id", "date", "homeTeamName", "homeScore", "awayScore", "awayTeamName", "button"];
 
 
   getDatafromBackEnd() {
     this.http.get<Game[]>("/api/general/allgames").subscribe(
-      game => {
-        console.log(game);
-        this.games = game
+      games => {
+        console.log(games);
+        this.games.data = games
       }
     )
+  }
+
+  openDialogForScore(game: Game) {
+    const dialogRef = this.dialog.open(DialogcontentaddscoreComponent, {
+      data: {gameId: game.id, homeTeamName: game.homeTeamName, awayTeamName: game.awayTeamName}
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      this.getDatafromBackEnd();
+    });
   }
 
   openDialogForGoalscorers(game: Game) {
@@ -58,14 +84,33 @@ export class AdminhomeComponent {
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      console.log(`Dialog result: ${result}`);
+      this.getDatafromBackEnd();
     });
   }
 
+  openDialogForGame() {
+    const dialogRef = this.dialog.open(DialogcontentaddgameComponent);
+
+    dialogRef.afterClosed().subscribe(result => {
+      //TODO refresh after closing
+      console.log(`Dialog result: ${result}`);
+      this.getDatafromBackEnd();
+    });
+  }
+
+  public toggleTheme() {
+    this.isDarkMode = !this.isDarkMode;
+    this.themeService.setDarkMode(this.isDarkMode);
+  }
+
+  gohome() {
+    this.router.navigate(['/admin/home']);
+  }
 
   logout() {
     this.authService.logout();
     this.router.navigate(['/login']);
+    this.themeService.setDarkMode(false);
   }
 
   gotomyaccount() {
