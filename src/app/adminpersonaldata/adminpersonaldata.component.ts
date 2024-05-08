@@ -10,6 +10,13 @@ import {MatInputModule} from '@angular/material/input';
 import {MatNativeDateModule} from '@angular/material/core';
 import {MatIconModule} from '@angular/material/icon';
 import {Router} from '@angular/router';
+import {ThemeService} from "../theme.service";
+import {NgClass, NgStyle} from "@angular/common";
+import {MatButton, MatIconButton} from "@angular/material/button";
+import {MatMenu, MatMenuItem, MatMenuTrigger} from "@angular/material/menu";
+import {MatSlideToggle} from "@angular/material/slide-toggle";
+import {MatToolbar, MatToolbarRow} from "@angular/material/toolbar";
+import {AuthService} from "../auth.service";
 
 export interface Profile {
   id: number
@@ -17,7 +24,7 @@ export interface Profile {
   password: string;
   firstName: string;
   lastName: string;
-  //dateOfBirth:Date;
+  birthDate: Date;
 }
 
 @Component({
@@ -26,25 +33,27 @@ export interface Profile {
   imports: [MatCardModule, MatFormFieldModule,
     FormsModule, ReactiveFormsModule, MatInputModule,
     MatDatepickerModule, MatNativeDateModule,
-    MatIconModule],
+    MatIconModule, NgClass, NgStyle, MatIconButton, MatMenu, MatMenuItem, MatSlideToggle, MatToolbar, MatToolbarRow, MatMenuTrigger, MatButton],
   templateUrl: './adminpersonaldata.component.html',
   styleUrl: './adminpersonaldata.component.scss'
 })
 export class AdminpersonaldataComponent {
+  isDarkMode: boolean;
   hide = true;
   oldUsername: string = "";
   oldPassword: string = "";
   oldFirstName: string = "";
   oldLastName: string = "";
   id: number = 0;
-  //oldBirthDate:Date=new Date(2023,1,4);
+  oldBirthDate: Date = new Date();
 
   url: string = '';
   username: string | null = ''
 
-  constructor(private http: HttpClient, private snackBar: MatSnackBar, private formBuilder: FormBuilder, private router: Router) {
+  constructor(private themeService: ThemeService, private authService: AuthService, private http: HttpClient, private snackBar: MatSnackBar, private formBuilder: FormBuilder, private router: Router) {
     this.url = "/api/admin/personaldata";
     this.username = localStorage.getItem(LOCALSTORAGE_TOKEN_KEY);
+    this.isDarkMode = themeService.isDarkMode();
     this.getDatafromBackend();
     this.setvalues();
   }
@@ -54,7 +63,7 @@ export class AdminpersonaldataComponent {
     password: this.oldPassword,
     firstName: this.oldFirstName,
     lastName: this.oldLastName,
-    datepicker: Date
+    datepicker: this.oldBirthDate
   })
 
   getDatafromBackend() {
@@ -71,6 +80,7 @@ export class AdminpersonaldataComponent {
         this.oldPassword = responseData.password;
         this.oldFirstName = responseData.firstName;
         this.oldLastName = responseData.lastName;
+        this.oldBirthDate = responseData.birthDate;
       }
     });
   }
@@ -81,12 +91,23 @@ export class AdminpersonaldataComponent {
       password: this.oldPassword,
       firstName: this.oldFirstName,
       lastName: this.oldLastName,
-      datepicker: null
+      datepicker: this.oldBirthDate
     })
   }
 
   gohome() {
     this.router.navigate(['/admin/home']);
+  }
+
+  public toggleTheme() {
+    this.isDarkMode = !this.isDarkMode;
+    this.themeService.setDarkMode(this.isDarkMode);
+  }
+
+  logout() {
+    this.authService.logout();
+    this.router.navigate(['/login']);
+    this.themeService.setDarkMode(false);
   }
 
   show() {
@@ -99,13 +120,13 @@ export class AdminpersonaldataComponent {
     if (!this.profileForm.valid) {
       return;
     }
-    var profileData: Profile = {
+    let profileData: Profile = {
       id: this.id,
       username: this.profileForm.value.username != null ? this.profileForm.value.username : this.oldUsername,
       password: this.profileForm.value.password != null ? this.profileForm.value.password : this.oldPassword,
       firstName: this.profileForm.value.firstName != null ? this.profileForm.value.firstName : this.oldFirstName,
       lastName: this.profileForm.value.lastName != null ? this.profileForm.value.lastName : this.oldLastName,
-      //dateOfBirth:this.profileForm.value.datepicker !=null ? this.profileForm.value.datepicker : this.oldBirthDate,
+      birthDate: this.profileForm.value.datepicker != null ? this.profileForm.value.datepicker : this.oldBirthDate,
     }
     console.log(profileData);
     this.http.post<Profile>(this.url + '/' + this.username, profileData).subscribe({
