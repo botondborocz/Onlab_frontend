@@ -1,55 +1,69 @@
-<h2 mat-dialog-title>Add new game</h2>
-<mat-dialog-content class="mat-typography">
-  <div class="addgame">
-    <form [formGroup]="gameForm" class="form-container">
-      <mat-form-field>
-        <mat-label>Choose a date</mat-label>
-        <input matInput [matDatepicker]="picker" placeholder="Choose a date" formControlName="datepicker">
-        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-        <mat-datepicker #picker></mat-datepicker>
-      </mat-form-field>
+<div [ngClass]="{'light-theme': !isDarkMode, 'dark-theme': isDarkMode}">
+  <h2 mat-dialog-title [ngClass]="{'text-for-dark-mode': isDarkMode}">Add new game</h2>
+  <mat-dialog-content class="mat-typography">
+    <div class="addgame">
+      <form [formGroup]="gameForm" class="form-container">
+        <mat-form-field appearance="outline" class="form-field-style">
+          <mat-label [ngClass]="{'text-for-dark-mode': isDarkMode}">Pick a date</mat-label>
+          <input [ngStyle]="{'color': isDarkMode ? '#ffffff' : '#000000' }" matInput [matDatepicker]="picker"
+                 formControlName="datepicker">
+          <mat-hint>MM/DD/YYYY</mat-hint>
+          <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+          <mat-datepicker #picker></mat-datepicker>
+        </mat-form-field>
 
+        <mat-form-field appearance="outline" class="form-field-style">
+          <mat-label [ngClass]="{'text-for-dark-mode': isDarkMode}">Championship</mat-label>
+          <mat-select [panelClass]="{'mat-select-color-dark': isDarkMode}" style="color: white !important;"
+                      formControlName="championship"
+                      (selectionChange)="getTeamsForChampionship()">
+            @for (championship of championships; track championship) {
+              <mat-option
+                [value]="championship.id">
+                {{ championship.name }}
+              </mat-option>
+            }
+          </mat-select>
+        </mat-form-field>
 
-      <mat-form-field>
-        <mat-label>Championship</mat-label>
-        <mat-select formControlName="championshipName">
-          @for (championship of championships; track championship) {
-            <mat-option [value]="championship.name"> {{ championship.name }}</mat-option>
-          }
-        </mat-select>
-      </mat-form-field>
+        <mat-form-field appearance="outline" class="form-field-style">
+          <mat-label [ngClass]="{'text-for-dark-mode': isDarkMode}">Home team</mat-label>
+          <mat-select [panelClass]="{'mat-select-color-dark': isDarkMode}" style="color: white !important;"
+                      formControlName="homeTeam">
+            @for (team of teams; track team) {
+              <mat-option [value]="team"> {{ team.teamName }}</mat-option>
+            }
+          </mat-select>
+        </mat-form-field>
 
-      <mat-form-field>
-        <mat-label>Home team</mat-label>
-        <mat-select formControlName="homeTeamName">
-          @for (team of teams; track team) {
-            <mat-option [value]="team.teamName"> {{ team.teamName }}</mat-option>
-          }
-        </mat-select>
-      </mat-form-field>
+        <mat-form-field appearance="outline" class="form-field-style">
+          <mat-label [ngClass]="{'text-for-dark-mode': isDarkMode}">Home Score</mat-label>
+          <input matInput type="number" formControlName="homeScore" name="homeScore">
+        </mat-form-field>
 
-      <mat-form-field>
-        <mat-label>Home Score</mat-label>
-        <input matInput type="number" formControlName="homeScore" name="homeScore">
-      </mat-form-field>
+        <mat-form-field appearance="outline" class="form-field-style">
+          <mat-label [ngClass]="{'text-for-dark-mode': isDarkMode}">Away Score</mat-label>
+          <input matInput type="number" formControlName="awayScore" name="awayScore">
+        </mat-form-field>
 
-      <mat-form-field>
-        <mat-label>Away Score</mat-label>
-        <input matInput type="number" formControlName="awayScore" name="awayScore">
-      </mat-form-field>
-
-      <mat-form-field>
-        <mat-label>Away team</mat-label>
-        <mat-select formControlName="awayTeamName">
-          @for (team of teams; track team) {
-            <mat-option [value]="team.teamName"> {{ team.teamName }}</mat-option>
-          }
-        </mat-select>
-      </mat-form-field>
-    </form>
-  </div>
-</mat-dialog-content>
-<mat-dialog-actions align="end">
-  <button mat-button mat-dialog-close>Cancel</button>
-  <button mat-button [mat-dialog-close]="true" cdkFocusInitial (click)="save()">Save</button>
-</mat-dialog-actions>
+        <mat-form-field appearance="outline" class="form-field-style">
+          <mat-label [ngClass]="{'text-for-dark-mode': isDarkMode}">Away team</mat-label>
+          <mat-select [panelClass]="{'mat-select-color-dark': isDarkMode}" style="color: white !important;"
+                      formControlName="awayTeam">
+            @for (team of teams; track team) {
+              <mat-option [value]="team"> {{ team.teamName }}</mat-option>
+            }
+          </mat-select>
+        </mat-form-field>
+      </form>
+    </div>
+  </mat-dialog-content>
+  <mat-dialog-actions align="end">
+    <button mat-raised-button [ngClass]="{'other-button-dark': isDarkMode, 'other-button-light': !isDarkMode}"
+            [mat-dialog-close]="true">Cancel
+    </button>
+    <button mat-raised-button [ngClass]="{'save-button-dark': isDarkMode, 'save-button-light': !isDarkMode}"
+            [mat-dialog-close]="true" cdkFocusInitial (click)="save()">Save
+    </button>
+  </mat-dialog-actions>
+</div>

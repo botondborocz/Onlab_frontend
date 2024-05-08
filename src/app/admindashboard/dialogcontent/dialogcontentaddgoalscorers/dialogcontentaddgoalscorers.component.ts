@@ -9,6 +9,8 @@ import {MatInputModule} from '@angular/material/input';
 import {MatTableModule} from '@angular/material/table';
 import {MatIconModule} from '@angular/material/icon';
 import {MatSnackBar} from '@angular/material/snack-bar';
+import {ThemeService} from "../../../theme.service";
+import {NgClass} from "@angular/common";
 
 export interface Game {
   id: number
@@ -42,17 +44,20 @@ export interface NewScorer {
   imports: [FormsModule, ReactiveFormsModule,
     MatFormFieldModule, MatDialogModule,
     MatButtonModule, MatSelectModule, MatInputModule,
-    MatTableModule, MatIconModule],
+    MatTableModule, MatIconModule, NgClass],
   templateUrl: './dialogcontentaddgoalscorers.component.html',
   styleUrl: './dialogcontentaddgoalscorers.component.scss'
 })
 export class DialogcontentaddgoalscorersComponent {
-  constructor(private snackBar: MatSnackBar, private formBuilder: FormBuilder, private http: HttpClient, @Inject(MAT_DIALOG_DATA) public data: GameId) {
+  isDarkMode: boolean;
+
+  constructor(private themeService: ThemeService, private snackBar: MatSnackBar, private formBuilder: FormBuilder, private http: HttpClient, @Inject(MAT_DIALOG_DATA) public data: GameId) {
     this.getGame();
     this.getHomeScorers();
     this.getAwayScorers();
     this.getHomePlayers();
     this.getAwayPlayers();
+    this.isDarkMode = themeService.isDarkMode();
   }
 
   games: Game[] = [];
@@ -137,7 +142,7 @@ export class DialogcontentaddgoalscorersComponent {
 
   save() {
     //console.log(this.homeScorers[0].id);
-    var scorerData: NewScorer = {
+    let scorerData: NewScorer = {
       gameId: this.data.gameId,
       homeScorerId: this.homeScorerForm.value.homeScorerId,
       awayScorerId: this.awayScorerForm.value.awayScorerId,

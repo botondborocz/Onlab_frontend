@@ -15,14 +15,13 @@ import {DialogcontentgameComponent} from './dialogcontentgame/dialogcontentgame.
 import {MatButtonToggleModule} from "@angular/material/button-toggle";
 import {ThemeService} from "../theme.service";
 import {LOCALSTORAGE_TOKEN_KEY} from "../app.component";
-import {provideAnimations} from "@angular/platform-browser/animations";
 
 export interface Game {
   id: number
   homeTeamName: string
   awayTeamName: string
-  homeTeamId: number
-  awayTeamId: number
+  homeId: number
+  awayId: number
   homeScore: number
   awayScore: number
   homeFavorite: boolean
@@ -45,7 +44,7 @@ export interface Championship {
   templateUrl: './userhome.component.html',
   styleUrl: './userhome.component.scss',
   encapsulation: ViewEncapsulation.None,
-  providers: [provideAnimations()]
+  providers: []
 })
 export class UserhomeComponent {
   isDarkMode: boolean;
@@ -71,7 +70,9 @@ export class UserhomeComponent {
         console.log(data);
         this.championships = data
         this.updateChampionship(this.championships[0].id);
-        this.championships[0].selected = true;
+        if (this.championships.length > 0) {
+          this.championships[0].selected = true;
+        }
       }
     )
   }
@@ -83,10 +84,11 @@ export class UserhomeComponent {
   public toggleTheme() {
     this.isDarkMode = !this.isDarkMode;
     this.themeService.setDarkMode(this.isDarkMode);
-    //this.ref.detectChanges();
   }
 
   public changeHomeFavorite(game: Game) {
+    console.log(game.homeId);
+    console.log(game.homeTeamName);
     this.http.post<Game>('/api/user/changehomefavorite/' + this.username, game).subscribe({
         next: (response) => console.log(response),
         error: (error) => {
@@ -124,7 +126,7 @@ export class UserhomeComponent {
 
 
   updateChampionship(champId: number) {
-
+    //TODO load data to localstorage
     console.log(champId);
     this.selectedChampionshipId = champId;
     const championshipId = {
@@ -190,6 +192,7 @@ export class UserhomeComponent {
 
   logout() {
     this.authService.logout();
+    this.themeService.setDarkMode(false);
     this.router.navigate(['/login']);
   }
 

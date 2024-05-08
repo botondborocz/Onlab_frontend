@@ -1,144 +1,151 @@
-<h2 mat-dialog-title>Add goalscorers</h2>
-<head>
-  <style>
-    .item1 {
-      grid-area: header;
-    }
+<div [ngClass]="{'light-theme': !isDarkMode, 'dark-theme': isDarkMode}">
+  <h2 mat-dialog-title [ngClass]="{'text-for-dark-mode': isDarkMode}">Add goalscorers</h2>
+  <head>
+    <style>
+      .item1 {
+        grid-area: header;
+      }
 
-    .item2 {
-      grid-area: left;
-    }
+      .item2 {
+        grid-area: left;
+      }
 
-    .item3 {
-      grid-area: right;
-    }
+      .item3 {
+        grid-area: right;
+      }
 
-    .item4 {
-      grid-area: bottom_left
-    }
+      .item4 {
+        grid-area: bottom_left
+      }
 
-    .item5 {
-      grid-area: bottom_right
-    }
+      .item5 {
+        grid-area: bottom_right
+      }
 
-    .grid-container {
-      display: grid;
-      grid-template-areas:
+      .grid-container-light {
+        display: grid;
+        grid-template-areas:
         'header header'
         'left right'
         'bottom_left bottom_right';
-      gap: 0px;
-      background-color: white;
-      padding: 10px;
-    }
+        gap: 0px;
+        background-color: #ffffff;
+        padding: 10px;
+      }
 
-    .grid-container > div {
-      background-color: white;
-      text-align: center;
-      padding: 20px 0;
-      font-size: 15px;
-    }
-  </style>
-</head>
-<body>
+      .grid-container-dark {
+        display: grid;
+        grid-template-areas:
+        'header header'
+        'left right'
+        'bottom_left bottom_right';
+        gap: 0px;
+        background-color: #282828;
+        padding: 10px;
+      }
 
-<div class="grid-container">
-  <div class="item1">
-    <table mat-table [dataSource]="games" class="mat-elevation-z8">
+      .grid-container > div {
+        background-color: white;
+        text-align: center;
+        padding: 20px 0;
+        font-size: 15px;
+      }
+    </style>
+  </head>
+  <body>
 
-      <ng-container matColumnDef="homeTeamName">
-        <th mat-header-cell *matHeaderCellDef> Home team</th>
-        <td mat-cell *matCellDef="let game"> {{ game.homeTeamName }}</td>
-      </ng-container>
+  <div [ngClass]="{'grid-container-light': !isDarkMode, 'grid-container-dark': isDarkMode}">
+    <div class="item1">
+      <table mat-table [dataSource]="games" class="mat-elevation-z8">
 
-      <ng-container matColumnDef="homeScore">
-        <th mat-header-cell *matHeaderCellDef=> Score</th>
-        <td mat-cell *matCellDef="let game"> {{ game.homeScore }}</td>
-      </ng-container>
+        <ng-container matColumnDef="homeTeamName">
+          <th mat-header-cell *matHeaderCellDef> Home team</th>
+          <td mat-cell *matCellDef="let game"> {{ game.homeTeamName }}</td>
+        </ng-container>
 
-      <ng-container matColumnDef="awayScore">
-        <th mat-header-cell *matHeaderCellDef> Score</th>
-        <td mat-cell *matCellDef="let game"> {{ game.awayScore }}</td>
-      </ng-container>
+        <ng-container matColumnDef="homeScore">
+          <th mat-header-cell *matHeaderCellDef=> Score</th>
+          <td mat-cell *matCellDef="let game"> {{ game.homeScore }}</td>
+        </ng-container>
 
-      <ng-container matColumnDef="awayTeamName">
-        <th mat-header-cell *matHeaderCellDef> Away team</th>
-        <td mat-cell *matCellDef="let game"> {{ game.awayTeamName }}</td>
-      </ng-container>
+        <ng-container matColumnDef="awayScore">
+          <th mat-header-cell *matHeaderCellDef> Score</th>
+          <td mat-cell *matCellDef="let game"> {{ game.awayScore }}</td>
+        </ng-container>
 
-      <tr mat-row *matRowDef="let myRowData; columns: columnsToDisplayGame;"></tr>
-    </table>
+        <ng-container matColumnDef="awayTeamName">
+          <th mat-header-cell *matHeaderCellDef> Away team</th>
+          <td mat-cell *matCellDef="let game"> {{ game.awayTeamName }}</td>
+        </ng-container>
+
+        <tr mat-row *matRowDef="let myRowData; columns: columnsToDisplayGame;"></tr>
+      </table>
+    </div>
+    <div class="item2">
+      <table mat-table [dataSource]="homeScorers" class="mat-elevation-z8">
+
+        <ng-container matColumnDef="name">
+          <th mat-header-cell *matHeaderCellDef> Name</th>
+          <td mat-cell *matCellDef="let scorer"
+              style="text-align: center"> {{ scorer.firstName + ' ' + scorer.lastName }}
+          </td>
+        </ng-container>
+
+        <tr mat-row *matRowDef="let myRowData; columns: columnsToDisplayHomeScorers;"></tr>
+      </table>
+    </div>
+    <div class="item3">
+      <table mat-table [dataSource]="awayScorers" class="mat-elevation-z8">
+
+        <ng-container matColumnDef="name">
+          <th mat-header-cell *matHeaderCellDef> Name</th>
+          <td mat-cell *matCellDef="let scorer"
+              style="text-align: center"> {{ scorer.firstName + ' ' + scorer.lastName }}
+          </td>
+        </ng-container>
+
+        <tr mat-row *matRowDef="let myRowData; columns: columnsToDisplayAwayScorers;"></tr>
+      </table>
+    </div>
+    <div class="item4">
+      <form [formGroup]="homeScorerForm" class="form-container">
+        <div>
+          <mat-form-field appearance="outline" class="form-field-style">
+            <mat-label [ngClass]="{'text-for-dark-mode': isDarkMode}">Add goalscorer</mat-label>
+            <mat-select [panelClass]="{'mat-select-color-dark': isDarkMode}" style="color: white !important;"
+                        formControlName="homeScorerId">
+              @for (player of homePlayers; track player) {
+                <mat-option [value]="player.id"> {{ player.firstName + ' ' + player.lastName }}</mat-option>
+              }
+            </mat-select>
+          </mat-form-field>
+        </div>
+      </form>
+    </div>
+    <div class="item5">
+      <form [formGroup]="awayScorerForm" class="form-container">
+        <div>
+          <mat-form-field appearance="outline" class="form-field-style">
+            <mat-label [ngClass]="{'text-for-dark-mode': isDarkMode}">Add goalscorer</mat-label>
+            <mat-select [panelClass]="{'mat-select-color-dark': isDarkMode}" style="color: white !important;"
+                        formControlName="awayScorerId">
+              @for (player of awayPlayers; track player) {
+                <mat-option [value]="player.id"> {{ player.firstName + ' ' + player.lastName }}</mat-option>
+              }
+            </mat-select>
+          </mat-form-field>
+        </div>
+      </form>
+    </div>
   </div>
-  <div class="item2">
-    <table mat-table [dataSource]="homeScorers" class="mat-elevation-z8">
 
-      <ng-container matColumnDef="name">
-        <th mat-header-cell *matHeaderCellDef> Name</th>
-        <td mat-cell *matCellDef="let scorer"
-            style="text-align: center"> {{ scorer.firstName + ' ' + scorer.lastName }}
-        </td>
-      </ng-container>
-
-      <tr mat-row *matRowDef="let myRowData; columns: columnsToDisplayHomeScorers;"></tr>
-    </table>
-  </div>
-  <div class="item3">
-    <table mat-table [dataSource]="awayScorers" class="mat-elevation-z8">
-
-      <ng-container matColumnDef="name">
-        <th mat-header-cell *matHeaderCellDef> Name</th>
-        <td mat-cell *matCellDef="let scorer"
-            style="text-align: center"> {{ scorer.firstName + ' ' + scorer.lastName }}
-        </td>
-      </ng-container>
-
-      <tr mat-row *matRowDef="let myRowData; columns: columnsToDisplayAwayScorers;"></tr>
-    </table>
-  </div>
-  <div class="item4">
-    <form [formGroup]="homeScorerForm" class="form-container">
-      <div>
-        <mat-form-field>
-          <mat-label>Home Score</mat-label>
-          <input matInput type="number" formControlName="homeScore" name="homeScore">
-        </mat-form-field>
-      </div>
-      <div>
-        <mat-form-field>
-          <mat-label>Add goalscorer</mat-label>
-          <mat-select formControlName="homeScorerId">
-            @for (player of homePlayers; track player) {
-              <mat-option [value]="player.id"> {{ player.firstName + ' ' + player.lastName }}</mat-option>
-            }
-          </mat-select>
-        </mat-form-field>
-      </div>
-    </form>
-  </div>
-  <div class="item5">
-    <form [formGroup]="awayScorerForm" class="form-container">
-      <div>
-        <mat-form-field>
-          <mat-label>Away Score</mat-label>
-          <input matInput type="number" formControlName="awayScore" name="awayScore">
-        </mat-form-field>
-      </div>
-      <div>
-        <mat-form-field>
-          <mat-label>Add goalscorer</mat-label>
-          <mat-select formControlName="awayScorerId">
-            @for (player of awayPlayers; track player) {
-              <mat-option [value]="player.id"> {{ player.firstName + ' ' + player.lastName }}</mat-option>
-            }
-          </mat-select>
-        </mat-form-field>
-      </div>
-    </form>
-  </div>
+  </body>
+  <mat-dialog-actions align="end">
+    <button mat-raised-button [ngClass]="{'other-button-dark': isDarkMode, 'other-button-light': !isDarkMode}"
+            [mat-dialog-close]="true">Cancel
+    </button>
+    <button mat-raised-button [ngClass]="{'save-button-dark': isDarkMode, 'save-button-light': !isDarkMode}"
+            [mat-dialog-close]="true" cdkFocusInitial (click)="save()">Save
+    </button>
+  </mat-dialog-actions>
 </div>
-
-</body>
-<mat-dialog-actions align="end">
-  <button mat-button mat-dialog-close>Cancel</button>
-  <button mat-button [mat-dialog-close]="true" cdkFocusInitial (click)="save()">Save</button>
-</mat-dialog-actions>

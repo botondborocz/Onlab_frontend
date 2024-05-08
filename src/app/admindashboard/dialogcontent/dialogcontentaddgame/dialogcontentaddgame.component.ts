@@ -1,10 +1,16 @@
-import {Component} from '@angular/core';
+import {Component, ViewEncapsulation} from '@angular/core';
 import {MatSelectModule} from '@angular/material/select';
 import {MatInputModule} from '@angular/material/input';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import {HttpClient} from '@angular/common/http';
 import {MatSnackBar} from '@angular/material/snack-bar';
-import {MatNativeDateModule} from '@angular/material/core';
+import {
+  DateAdapter,
+  MAT_DATE_FORMATS,
+  MAT_NATIVE_DATE_FORMATS,
+  MatNativeDateModule,
+  NativeDateAdapter
+} from '@angular/material/core';
 import {MatDatepickerModule} from '@angular/material/datepicker';
 import {FormBuilder, FormControl, FormsModule, ReactiveFormsModule, UntypedFormControl} from '@angular/forms';
 import {MatIconModule} from '@angular/material/icon';
@@ -12,32 +18,9 @@ import {MatTooltipModule} from '@angular/material/tooltip';
 import {MatButtonModule} from '@angular/material/button';
 import {MatDialogModule} from '@angular/material/dialog';
 import {MatCardModule} from '@angular/material/card';
-import {provideAnimations} from "@angular/platform-browser/animations";
-
-export interface Game {
-  id: number
-  homeTeamName: string
-  awayTeamName: string
-  homeScore: number
-  awayScore: number
-  championshipName: string
-  date: Date
-}
-
-export interface Championship {
-  id: number
-  name: string
-}
-
-export interface Team {
-  id: number
-  teamName: string
-}
-
-export interface Championship {
-  id: number
-  name: string
-}
+import {NgClass, NgStyle} from "@angular/common";
+import {ThemeService} from "../../../theme.service";
+import {Championship, Game, Team} from "../../../interfaces"
 
 @Component({
   selector: 'app-dialogcontentaddgame',
@@ -47,34 +30,55 @@ export interface Championship {
     MatSelectModule, MatButtonModule,
     MatTooltipModule, MatIconModule,
     MatDatepickerModule, MatNativeDateModule,
-    MatDialogModule, MatCardModule],
+    MatDialogModule, MatCardModule, NgClass, NgStyle],
   templateUrl: './dialogcontentaddgame.component.html',
   styleUrl: './dialogcontentaddgame.component.scss',
-  providers: [provideAnimations()]
+  encapsulation: ViewEncapsulation.None,
+  providers: [
+    {provide: DateAdapter, useClass: NativeDateAdapter},
+    {provide: MAT_DATE_FORMATS, useValue: MAT_NATIVE_DATE_FORMATS}
+  ]
 })
 export class DialogcontentaddgameComponent {
+  //TODO mat select drop down background
   id: number = 0;
+  isDarkMode: boolean;
 
-  constructor(private formBuilder: FormBuilder, private http: HttpClient, private snackBar: MatSnackBar) {
-    this.getTeams();
+  constructor(private themeService: ThemeService, private formBuilder: FormBuilder, private http: HttpClient, private snackBar: MatSnackBar) {
+    //this.getTeams();
     this.getChampionships();
+    this.isDarkMode = themeService.isDarkMode();
   }
 
   options: Game[] = [];
   teams: Team[] = [];
   championships: Championship[] = [];
+  myDate: Date = new Date();
+
 
   gameForm = this.formBuilder.group({
     datepicker: new FormControl(),
-    homeTeamName: new UntypedFormControl(null, []),
-    awayTeamName: new UntypedFormControl(null, []),
+    homeTeam: new UntypedFormControl(null, []),
+    awayTeam: new UntypedFormControl(null, []),
     homeScore: new UntypedFormControl(null, []),
     awayScore: new UntypedFormControl(null, []),
-    championshipName: new UntypedFormControl(null, [])
+    championship: new UntypedFormControl(null, [])
   })
 
   getTeams() {
     this.http.get<Team[]>('/api/general/allteams').subscribe(
+      data => {
+        console.log(data);
+        this.teams = data;
+      }
+    )
+  }
+
+  getTeamsForChampionship() {
+    const selectedChampionshipId = {
+      params: {"championshipId": this.gameForm.value.championship}
+    }
+    this.http.get<Team[]>('/api/general/teams', selectedChampionshipId).subscribe(
       data => {
         console.log(data);
         this.teams = data;
@@ -91,6 +95,7 @@ export class DialogcontentaddgameComponent {
     )
   }
 
+
   save() {
     if (!this.gameForm.valid) {
       return;
@@ -98,11 +103,13 @@ export class DialogcontentaddgameComponent {
     var gameData: Game = {
       id: this.id,
       date: this.gameForm.value.datepicker,
-      homeTeamName: this.gameForm.value.homeTeamName,
+      homeTeamName: this.gameForm.value.homeTeam.teamName,
+      homeTeamId: this.gameForm.value.homeTeam.id,
       homeScore: this.gameForm.value.homeScore,
       awayScore: this.gameForm.value.awayScore,
-      awayTeamName: this.gameForm.value.awayTeamName,
-      championshipName: this.gameForm.value.championshipName,
+      awayTeamName: this.gameForm.value.awayTeam.teamName,
+      awayTeamId: this.gameForm.value.awayTeam.id,
+      champId: this.gameForm.value.championship,
     }
     this.http.post<Game>('/api/admin/newgame', gameData).subscribe({
       next: (response) => console.log(response),

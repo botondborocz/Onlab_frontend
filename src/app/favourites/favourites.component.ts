@@ -15,24 +15,8 @@ import {CommonModule} from "@angular/common";
 import {MatButtonToggleModule} from "@angular/material/button-toggle";
 import {DialogcontentgameComponent} from "../userhome/dialogcontentgame/dialogcontentgame.component";
 import {MatDialog, MatDialogModule} from "@angular/material/dialog";
-import {provideAnimations} from "@angular/platform-browser/animations";
+import {Game, Team} from "../interfaces";
 
-export interface Team {
-  id: number
-  teamName: string
-  buttonClicked: boolean
-}
-
-export interface Game {
-  id: number
-  homeTeamName: string
-  awayTeamName: string
-  homeScore: number
-  awayScore: number
-  homeFavorite: boolean
-  awayFavorite: boolean
-  date: Date
-}
 
 @Component({
   selector: 'app-favourites',
@@ -43,7 +27,7 @@ export interface Game {
     MatTableModule, CommonModule, MatDialogModule],
   templateUrl: './favourites.component.html',
   styleUrl: './favourites.component.scss',
-  providers: [provideAnimations()]
+  providers: []
 })
 export class FavouritesComponent {
   isDarkMode: boolean;
@@ -59,6 +43,10 @@ export class FavouritesComponent {
     this.isDarkMode = themeService.isDarkMode();
     this.username = localStorage.getItem(LOCALSTORAGE_TOKEN_KEY);
     this.getFavorites();
+    console.log("AAA")
+    if (this.favorites.length > 0) {
+      this.favorites[0].selected = true;
+    }
   }
 
   public getFavorites() {
@@ -66,15 +54,16 @@ export class FavouritesComponent {
       data => {
         console.log(data);
         this.favorites = data;
+        console.log(this.favorites.length)
       }
     )
   }
 
   public getFavoriteGames(team: Team) {
     this.favorites.forEach(function (team) {
-      team.buttonClicked = false;
+      team.selected = false;
     })
-    team.buttonClicked = !team.buttonClicked;
+    team.selected = true;
     this.getFavoriteGamesBefore(team);
     this.getFavoriteGamesAfter(team);
   }
@@ -111,6 +100,7 @@ export class FavouritesComponent {
 
     dialogRef.afterClosed().subscribe(result => {
       console.log(`Dialog result: ${result}`);
+      this.getFavorites();
     });
   }
 
@@ -121,6 +111,7 @@ export class FavouritesComponent {
 
   logout() {
     this.authService.logout();
+    this.themeService.setDarkMode(false);
     this.router.navigate(['/login']);
   }
 

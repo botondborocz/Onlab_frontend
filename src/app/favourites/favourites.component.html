@@ -7,35 +7,11 @@
     .item2 {
       grid-area: right;
     }
-
-    .grid-container-light {
-      display: grid;
-      grid-template-areas:
-        'left right right';
-      gap: 0px;
-      padding: 10px;
-      background-color: #ffffff;
-    }
-
-    .grid-container-dark {
-      display: grid;
-      grid-template-areas:
-        'left right right';
-      gap: 0px;
-      padding: 10px;
-      background-color: #282828;
-    }
-
-    .grid-container > div {
-      text-align: center;
-      padding: 20px 0;
-      font-size: 30px;
-    }
   </style>
 </head>
 
 <nav>
-  <mat-toolbar>
+  <mat-toolbar [ngClass]="{'light-theme': !isDarkMode, 'dark-theme': isDarkMode}">
     <mat-toolbar-row>
       <a>
         <button mat-icon-button class="example-icon" aria-label="Example icon-button with menu icon" (click)="gohome()">
@@ -75,16 +51,20 @@
   </a>
 </mat-menu>
 
-<div [ngClass]="{'grid-container-light': true}">
+<div [ngClass]="{'grid-container-light': !isDarkMode, 'grid-container-dark': isDarkMode}">
   <div class="item1">
     <div>
-      <h4>Teams</h4>
-      <table mat-table [dataSource]="favorites">
+      <table mat-table [dataSource]="favorites" class="custom-transition">
         <ng-container matColumnDef="name">
           <th mat-header-cell *matHeaderCellDef> Name</th>
-          <td mat-cell *matCellDef="let team" [ngClass]="{'green': team.buttonClicked}"
+          <td mat-cell *matCellDef="let team"
+              [ngClass]="{'selected-dark': team.selected && isDarkMode, 'selected-light': team.selected && !isDarkMode}"
               (click)="getFavoriteGames(team)">
-            <button mat-button>
+            <button mat-button
+                    [ngClass]="{'selected-button-dark': team.selected && isDarkMode,
+                                    'selected-button-light': team.selected && !isDarkMode,
+                                    'text-for-dark-mode': !team.selected && isDarkMode,
+                                    'text-for-light-mode': !team.selected && !isDarkMode}">
               {{ team.teamName }}
             </button>
           </td>
@@ -99,10 +79,10 @@
 
   <div class="item2">
     <div>
-      <h4>Games</h4>
-      <mat-tab-group fitInkBarToContent animationDuration="200ms" [selectedIndex]="0">
+      <mat-tab-group fitInkBarToContent animationDuration="500ms" [selectedIndex]="0"
+                     [ngClass]="{'light-theme': !isDarkMode, 'dark-theme': isDarkMode}">
         <mat-tab label="Past">
-          <table mat-table [dataSource]="gamesBefore" class="mat-elevation-z8">
+          <table mat-table [dataSource]="gamesBefore" class="custom-transition">
 
             <ng-container matColumnDef="id">
               <th mat-header-cell *matHeaderCellDef> Date</th>
@@ -132,7 +112,7 @@
             <ng-container matColumnDef="button">
               <th mat-header-cell *matHeaderCellDef> Details</th>
               <td mat-cell *matCellDef="let myRowData" (click)="openDialogForGame(myRowData)">
-                <button mat-button>
+                <button mat-button [ngClass]="{'text-for-dark-mode': isDarkMode}">
                   <mat-icon>library_books</mat-icon>
                   Details
                 </button>
@@ -146,7 +126,7 @@
 
 
         <mat-tab label="Future">
-          <table mat-table [dataSource]="gamesAfter" class="mat-elevation-z8">
+          <table mat-table [dataSource]="gamesAfter" class="custom-transition">
 
             <ng-container matColumnDef="id">
               <th mat-header-cell *matHeaderCellDef> Date</th>
@@ -176,7 +156,7 @@
             <ng-container matColumnDef="button">
               <th mat-header-cell *matHeaderCellDef> Details</th>
               <td mat-cell *matCellDef="let myRowData" (click)="openDialogForGame(myRowData)">
-                <button mat-button>
+                <button mat-button [ngClass]="{'text-for-dark-mode': isDarkMode}">
                   <mat-icon>library_books</mat-icon>
                   Details
                 </button>

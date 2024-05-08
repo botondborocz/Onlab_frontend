@@ -1,5 +1,5 @@
 <nav>
-  <mat-toolbar>
+  <mat-toolbar class="custom-transition">
     <mat-toolbar-row>
       <a>
         <button mat-icon-button class="example-icon" aria-label="Example icon-button with menu icon" (click)="gohome()">
@@ -38,64 +38,79 @@
     </button>
   </a>
 </mat-menu>
-<form [formGroup]="profileForm" class="form-container">
-  <mat-card>
-    <mat-card-header>
-      <mat-card-title>My Account</mat-card-title>
-    </mat-card-header>
-    <mat-card-content>
-      <div class="row">
-        <div class="col-md-6">
-          <mat-form-field class="full-width" appearance="outline">
-            <mat-label>Username</mat-label>
-            <input formControlName="username" matInput>
-          </mat-form-field>
-        </div>
+
+<div>
+  <form [formGroup]="profileForm" class="form-container" (keydown.enter)="$event.preventDefault()">
+    <mat-card>
+      <div [ngClass]="{'mat-card-light': !isDarkMode, 'mat-card-dark': isDarkMode}">
+        <mat-card-header>
+          <mat-card-title>My Account</mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+          <div class="row">
+            <div class="col-md-6">
+              <mat-form-field appearance="outline" class="form-field-style">
+                <mat-label [ngClass]="{'text-for-dark-mode': isDarkMode}">Username</mat-label>
+                <input [ngStyle]="{'color': isDarkMode ? '#ffffff' : '#000000' }" formControlName="username" matInput>
+              </mat-form-field>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-6">
+              <mat-form-field appearance="outline" class="form-field-style">
+                <mat-label [ngClass]="{'text-for-dark-mode': isDarkMode}">Password</mat-label>
+                <input [ngStyle]="{'color': isDarkMode ? '#ffffff' : '#000000' }" matInput formControlName="password"
+                       [type]="hide ? 'password' : 'text'">
+                <button mat-icon-button matSuffix (click)="hide = !hide" [attr.aria-label]="'Hide password'"
+                        [attr.aria-pressed]="hide">
+                  <mat-icon>{{ hide ? 'visibility_off' : 'visibility' }}</mat-icon>
+                </button>
+              </mat-form-field>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-6">
+              <mat-form-field appearance="outline" class="form-field-style">
+                <mat-label [ngClass]="{'text-for-dark-mode': isDarkMode}">First Name</mat-label>
+                <input [ngStyle]="{'color': isDarkMode ? '#ffffff' : '#000000' }" formControlName="firstName" matInput>
+              </mat-form-field>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-6">
+              <mat-form-field appearance="outline" class="form-field-style">
+                <mat-label [ngClass]="{'text-for-dark-mode': isDarkMode}">Last Name</mat-label>
+                <input [ngStyle]="{'color': isDarkMode ? '#ffffff' : '#000000' }" formControlName="lastName" matInput>
+              </mat-form-field>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-6">
+              <mat-form-field appearance="outline" class="form-field-style">
+                <mat-label [ngClass]="{'text-for-dark-mode': isDarkMode}">Pick a date</mat-label>
+                <input [ngStyle]="{'color': isDarkMode ? '#ffffff' : '#000000' }" matInput [matDatepicker]="picker"
+                       formControlName="datepicker">
+                <mat-hint>MM/DD/YYYY</mat-hint>
+                <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+                <mat-datepicker #picker></mat-datepicker>
+              </mat-form-field>
+            </div>
+          </div>
+        </mat-card-content>
+        <mat-card-actions>
+          <button mat-raised-button
+                  [ngClass]="{'save-button-dark': isDarkMode, 'save-button-light': !isDarkMode}"
+                  (click)="save()">Save
+          </button>
+          <button mat-raised-button [ngClass]="{'other-button-dark': isDarkMode, 'other-button-light': !isDarkMode}"
+                  (click)="gohome()">Cancel
+          </button>
+          <button mat-raised-button [ngClass]="{'other-button-dark': isDarkMode, 'other-button-light': !isDarkMode}"
+                  (click)="show()">Show current
+          </button>
+        </mat-card-actions>
       </div>
-      <div class="row">
-        <div class="col-md-6">
-          <mat-form-field class="full-width" appearance="outline">
-            <mat-label>Password</mat-label>
-            <input matInput formControlName="password" [type]="hide ? 'password' : 'text'">
-            <button mat-icon-button matSuffix (click)="hide = !hide" [attr.aria-label]="'Hide password'"
-                    [attr.aria-pressed]="hide">
-              <mat-icon>{{ hide ? 'visibility_off' : 'visibility' }}</mat-icon>
-            </button>
-          </mat-form-field>
-        </div>
-      </div>
-      <div class="row">
-        <div class="col-md-6">
-          <mat-form-field class="full-width" appearance="outline">
-            <mat-label>First Name</mat-label>
-            <input formControlName="firstName" matInput>
-          </mat-form-field>
-        </div>
-      </div>
-      <div class="row">
-        <div class="col-md-6">
-          <mat-form-field class="full-width" appearance="outline">
-            <mat-label>Last Name</mat-label>
-            <input formControlName="lastName" matInput>
-          </mat-form-field>
-        </div>
-      </div>
-      <div class="row">
-        <div class="col-md-6">
-          <mat-form-field class="full-width" appearance="outline">
-            <mat-label>Pick a date</mat-label>
-            <input matInput [matDatepicker]="picker" formControlName="datepicker">
-            <mat-hint>MM/DD/YYYY</mat-hint>
-            <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
-            <mat-datepicker #picker></mat-datepicker>
-          </mat-form-field>
-        </div>
-      </div>
-    </mat-card-content>
-    <mat-card-actions>
-      <button type="button" class="btn btn-primary" (click)="save()">Save</button>
-      <button type="button" class="btn btn-secondary" (click)="gohome()">Cancel</button>
-      <button type="button" class="btn btn-secondary" (click)="show()">Show current</button>
-    </mat-card-actions>
-  </mat-card>
-</form>
+    </mat-card>
+  </form>
+</div>
+
