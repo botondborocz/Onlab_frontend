@@ -8,6 +8,7 @@ import {MatIconModule} from '@angular/material/icon';
 import {NgClass} from "@angular/common";
 import {MatIconButton} from "@angular/material/button";
 import {LOCALSTORAGE_TOKEN_KEY} from "../../app.component";
+import {ThemeService} from "../../theme.service";
 
 export interface Game {
   id: number
@@ -35,13 +36,14 @@ export interface Scorer {
   styleUrl: './dialogcontentgame.component.scss'
 })
 export class DialogcontentgameComponent {
-  isDarkMode: boolean = true;
+  isDarkMode: boolean;
 
-  constructor(private http: HttpClient, @Inject(MAT_DIALOG_DATA) public data: GameId) {
+  constructor(private themeService: ThemeService, private http: HttpClient, @Inject(MAT_DIALOG_DATA) public data: GameId) {
     this.getGame();
     this.getHomeScorers();
     this.getAwayScorers();
     this.username = localStorage.getItem(LOCALSTORAGE_TOKEN_KEY);
+    this.isDarkMode = this.themeService.isDarkMode();
   }
 
   //selectedGameId:GameId = this.data;

@@ -11,14 +11,13 @@ import {MatNativeDateModule} from '@angular/material/core';
 import {MatIconModule} from '@angular/material/icon';
 import {Router} from '@angular/router';
 import {MatTabGroup} from "@angular/material/tabs";
-import {NgClass} from "@angular/common";
+import {NgClass, NgStyle} from "@angular/common";
 import {MatSlideToggle} from "@angular/material/slide-toggle";
 import {ThemeService} from "../theme.service";
-import {MatIconButton} from "@angular/material/button";
+import {MatButtonModule, MatIconButton} from "@angular/material/button";
 import {MatToolbar, MatToolbarRow} from "@angular/material/toolbar";
 import {MatMenu, MatMenuItem, MatMenuTrigger} from "@angular/material/menu";
 import {AuthService} from "../auth.service";
-import {provideAnimations} from "@angular/platform-browser/animations";
 
 export interface Profile {
   id: number
@@ -26,7 +25,7 @@ export interface Profile {
   password: string;
   firstName: string;
   lastName: string;
-  dateOfBirth: Date;
+  birthDate: Date;
 }
 
 @Component({
@@ -36,10 +35,10 @@ export interface Profile {
     ReactiveFormsModule, MatInputModule, MatDatepickerModule,
     MatNativeDateModule, MatIconModule, MatTabGroup, NgClass,
     MatSlideToggle, MatIconButton, MatToolbar, MatToolbarRow,
-    MatMenu, MatMenuItem, MatMenuTrigger],
+    MatMenu, MatMenuItem, MatMenuTrigger, NgStyle, MatButtonModule],
   templateUrl: './userpersonaldata.component.html',
   styleUrl: './userpersonaldata.component.scss',
-  providers: [provideAnimations()]
+  providers: []
 })
 
 export class PersonaldataComponent {
@@ -50,7 +49,7 @@ export class PersonaldataComponent {
   oldFirstName: string = "";
   oldLastName: string = "";
   id: number = 0;
-  oldBirthDate: Date = new Date(2023, 1, 4);
+  oldBirthDate: Date = new Date();
 
   url: string = '';
   username: string | null = ''
@@ -87,8 +86,8 @@ export class PersonaldataComponent {
         this.oldPassword = responseData.password;
         this.oldFirstName = responseData.firstName;
         this.oldLastName = responseData.lastName;
+        this.oldBirthDate = responseData.birthDate;
       }
-      //this.oldBirthDate=responseData.dateOfBirth;}
     });
   }
 
@@ -113,17 +112,16 @@ export class PersonaldataComponent {
     if (!this.profileForm.valid) {
       return;
     }
-    var profileData: Profile = {
+    let profileData: Profile = {
       id: this.id,
       username: this.profileForm.value.username != null ? this.profileForm.value.username : this.oldUsername,
       password: this.profileForm.value.password != null ? this.profileForm.value.password : this.oldPassword,
       firstName: this.profileForm.value.firstName != null ? this.profileForm.value.firstName : this.oldFirstName,
       lastName: this.profileForm.value.lastName != null ? this.profileForm.value.lastName : this.oldLastName,
-      dateOfBirth: this.profileForm.value.datepicker != null ? this.profileForm.value.datepicker : this.oldBirthDate,
+      birthDate: this.profileForm.value.datepicker != null ? this.profileForm.value.datepicker : this.oldBirthDate,
     }
     console.log(profileData);
     this.http.post<Profile>(this.url + '/' + this.username, profileData).subscribe({
-      next: (response) => console.log(response),
       error: (error) => {
         (this.snackBar).open(
           "Data modification failed", 'Close', {duration: 10000, horizontalPosition: 'center', verticalPosition: 'top'}
@@ -144,6 +142,7 @@ export class PersonaldataComponent {
 
   logout() {
     this.authService.logout();
+    this.themeService.setDarkMode(false);
     this.router.navigate(['/login']);
   }
 

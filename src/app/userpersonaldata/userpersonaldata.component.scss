@@ -20,12 +20,21 @@
   flex: 1 1 auto;
 }
 
-mat-card {
-  //max-width: 500px;
-  margin: 2em 2em;
+.mat-card-light {
   text-align: center;
   justify-content: center;
+  background-color: #ffffff !important;
+  transition: all 0.5s ease;
+}
 
+.mat-card-dark {
+  text-align: center;
+  justify-content: center;
+  background-color: #282828 !important;
+  transition: all 0.5s ease;
+}
+
+mat-card {
   mat-card-title {
     font-size: x-large;
     margin: 1em auto;
@@ -61,5 +70,8 @@ mat-card {
       }
     }
   }
+}
 
+.mat-form-field-appearance-outline .mat-form-field-outline-thick {
+  color: #3f51b5 !important
 }
