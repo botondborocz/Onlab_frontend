@@ -9,24 +9,7 @@ import {NgClass} from "@angular/common";
 import {MatIconButton} from "@angular/material/button";
 import {LOCALSTORAGE_TOKEN_KEY} from "../../app.component";
 import {ThemeService} from "../../theme.service";
-
-export interface Game {
-  id: number
-  homeTeamName: string
-  awayTeamName: string
-  homeScore: number
-  awayScore: number
-  championship: string
-}
-
-export interface GameId {
-  gameId: number
-}
-
-export interface Scorer {
-  firstName: string
-  lastName: string
-}
+import {Game, GameId, Scorer} from "../../interfaces";
 
 @Component({
   selector: 'app-dialogcontentgame',
@@ -39,6 +22,7 @@ export class DialogcontentgameComponent {
   isDarkMode: boolean;
 
   constructor(private themeService: ThemeService, private http: HttpClient, @Inject(MAT_DIALOG_DATA) public data: GameId) {
+    localStorage.removeItem("game" + this.data.gameId);
     this.getGame();
     this.getHomeScorers();
     this.getAwayScorers();
@@ -46,76 +30,73 @@ export class DialogcontentgameComponent {
     this.isDarkMode = this.themeService.isDarkMode();
   }
 
-  //selectedGameId:GameId = this.data;
   username: string | null = "";
   games: Game[] = [];
   homeScorers: Scorer[] = [];
   awayScorers: Scorer[] = [];
-  columnsToDisplayGame = ["homeFavourite", "homeTeamName", "homeScore", "awayScore", "awayTeamName", "awayFavourite"];
+  columnsToDisplayGameHome = ["homeTeamName", "homeScore"];
+  columnsToDisplayGameAway = ["awayScore", "awayTeamName"];
   columnsToDisplayHomeScorers = ["name"];
   columnsToDisplayAwayScorers = ["name"];
 
+  /**
+   * Retrieves game details from the backend.
+   */
   getGame() {
     const gameId = {
       params: {'gameId': this.data.gameId}
     }
-    this.http.get<Game[]>("/api/general/game", gameId).subscribe(
-      res => {
-        console.log(res);
-        this.games = res;
-      }
-    )
+    if (localStorage.getItem("game" + this.data.gameId) === null) {
+      this.http.get<Game[]>("/api/general/game", gameId).subscribe(
+        res => {
+          console.log(res);
+          this.games = res;
+          localStorage.setItem("game" + this.data.gameId, JSON.stringify(res));
+        }
+      )
+    } else {
+      this.games = JSON.parse(localStorage.getItem("game" + this.data.gameId) ?? '[]');
+    }
   }
-
+  
+  /**
+   * Retrieves home scorers from the backend.
+   */
   getHomeScorers() {
     const gameId = {
       params: {'gameId': this.data.gameId}
     }
-    this.http.get<Scorer[]>("/api/general/game/homescorers", gameId).subscribe(
-      res => {
-        console.log(res);
-        this.homeScorers = res;
-      }
-    )
+    if (localStorage.getItem("homescorers" + this.data.gameId) === null) {
+      this.http.get<Scorer[]>("/api/general/game/homescorers", gameId).subscribe(
+        res => {
+          console.log(res);
+          this.homeScorers = res;
+          localStorage.setItem("homescorers" + this.data.gameId, JSON.stringify(res));
+        }
+      )
+    } else {
+      this.homeScorers = JSON.parse(localStorage.getItem("homescorers" + this.data.gameId) ?? '[]');
+    }
   }
 
+  /**
+   * Retrieves away scorers from the backend.
+   */
   getAwayScorers() {
     const gameId = {
       params: {'gameId': this.data.gameId}
     }
-    this.http.get<Scorer[]>("/api/general/game/awayscorers", gameId).subscribe(
-      res => {
-        console.log(res);
-        this.awayScorers = res;
-      }
-    )
+    if (localStorage.getItem("awayscorers" + this.data.gameId) === null) {
+      this.http.get<Scorer[]>("/api/general/game/awayscorers", gameId).subscribe(
+        res => {
+          console.log(res);
+          this.awayScorers = res;
+          localStorage.setItem("awayscorers" + this.data.gameId, JSON.stringify(res));
+        }
+      )
+    } else {
+      this.awayScorers = JSON.parse(localStorage.getItem("awayscorers" + this.data.gameId) ?? '[]');
+    }
   }
 
-  public changeHomeFavorite(game: Game) {
-    this.http.post<Game>('/api/user/changehomefavorite/' + this.username, game).subscribe({
-        next: (response) => console.log(response),
-        error: (error) => {
-          //error
-        },
-        complete: () => {
-          this.getGame();
-          console.log(game);
-        }
-      }
-    );
-  }
-
-  public changeAwayFavorite(game: Game) {
-    this.http.post<Game>('/api/user/changeawayfavorite/' + this.username, game).subscribe({
-        next: (response) => console.log(response),
-        error: (error) => {
-          //error
-        },
-        complete: () => {
-          this.getGame();
-          console.log(game);
-        }
-      }
-    );
-  }
 }
