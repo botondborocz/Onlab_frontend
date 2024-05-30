@@ -74,7 +74,7 @@ body {
   --mat-option-label-text-color: #ffffff;
   --mat-option-selected-state-label-text-color: #fdfd96;
   --mat-option-selected-state-layer-color: #282828;
-  overflow: hidden;
+  overflow-x: hidden;
 
 
   --mat-datepicker-calendar-container-background-color: #282828;
@@ -90,6 +90,7 @@ body {
   --mat-datepicker-calendar-period-button-icon-color: #ffffff;
   --mat-datepicker-calendar-date-today-outline-color: #fdfd96;
   --mat-datepicker-calendar-date-hover-state-background-color: #858547;
+  --mat-datepicker-calendar-date-focus-state-background-color: #282828;
 
 
   -moz-transition: 0.5s;

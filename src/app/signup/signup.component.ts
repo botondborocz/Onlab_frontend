@@ -1,47 +1,25 @@
 import {Component} from '@angular/core';
 import {Router, RouterModule} from '@angular/router';
 import {AuthService} from '../auth.service';
-import {
-  AbstractControl,
-  FormBuilder,
-  FormControl,
-  FormGroup,
-  FormGroupDirective,
-  NgForm,
-  ReactiveFormsModule,
-  ValidationErrors,
-  ValidatorFn,
-  Validators
-} from '@angular/forms';
+import {FormBuilder, FormGroup, ReactiveFormsModule, Validators} from '@angular/forms';
 import {MatSnackBar} from '@angular/material/snack-bar';
 import {MatCard, MatCardContent, MatCardHeader, MatCardTitle} from "@angular/material/card";
 import {MatFormField, MatFormFieldModule, MatLabel, MatSuffix} from "@angular/material/form-field";
 import {MatInput} from "@angular/material/input";
 import {MatIcon} from "@angular/material/icon";
-import {MatIconButton} from "@angular/material/button";
-import {ErrorStateMatcher} from "@angular/material/core";
+import {MatButton, MatIconButton} from "@angular/material/button";
 import {JsonPipe} from "@angular/common";
 
 @Component({
   selector: 'app-signup',
   standalone: true,
-  imports: [RouterModule, ReactiveFormsModule, MatCard, MatCardContent, MatCardHeader, MatCardTitle, MatFormField, MatInput, MatLabel, MatIcon, MatIconButton, MatSuffix, MatFormFieldModule, JsonPipe],
+  imports: [RouterModule, ReactiveFormsModule, MatCard, MatCardContent, MatCardHeader, MatCardTitle, MatFormField, MatInput, MatLabel, MatIcon, MatIconButton, MatSuffix, MatFormFieldModule, JsonPipe, MatButton],
   templateUrl: './signup.component.html',
   styleUrl: './signup.component.scss',
   providers: []
 })
 export class SignupComponent {
-  //username: FormControl = new FormControl('')
-  //password: FormControl = new FormControl('')
-  //isAdmin: FormControl = new FormControl('')
   hide: boolean = true;
-  matcher = new MyErrorStateMatcher();
-  usernameControl = this.formBuilder.control('', [Validators.required]);
-  passwordControl = this.formBuilder.control('', [Validators.required]);
-  confirmPasswordControl = this.formBuilder.control('', [Validators.required]);
-  firstNameControl = this.formBuilder.control('', [Validators.required]);
-  lastNameControl = this.formBuilder.control('', [Validators.required]);
-  isAdminControl = this.formBuilder.control('', [Validators.required]);
 
   profileForm: FormGroup;
 
@@ -49,14 +27,10 @@ export class SignupComponent {
     this.profileForm = formBuilder.group({
       username: ["", [Validators.required]],
       password: ["", [Validators.required]],
-      confirmPassword: ["", [Validators.required, matchValidator]],
       firstName: ["", [Validators.required]],
       lastName: ["", [Validators.required]],
       isAdmin: [""]
     });
-    this.profileForm.addValidators(
-      matchValidator(this.profileForm.get('password')!, this.profileForm.get('confirmPassword')!)
-    );
   }
 
   signup() {
@@ -66,14 +40,14 @@ export class SignupComponent {
       );
       return;
     }
-    var body = {
+    let body = {
       username: this.profileForm.value.username,
       password: this.profileForm.value.password,
       firstName: this.profileForm.value.firstName,
       lastName: this.profileForm.value.lastName,
       isAdmin: this.profileForm.value.isAdmin
     }
-    var url: string
+    let url: string
     if (this.profileForm.value.isAdmin) {
       url = '/api/auth/signup/admin'
     } else {
@@ -91,38 +65,5 @@ export class SignupComponent {
         this.router.navigate(['/login']);
       }
     });
-  }
-}
-
-export function matchValidator(
-  control: AbstractControl,
-  controlTwo: AbstractControl
-): ValidatorFn {
-  return () => {
-    if (control.value !== controlTwo.value)
-      return {match_error: 'Value does not match'};
-    return null;
-  };
-}
-
-export const passwordValidator: ValidatorFn = (
-  control: AbstractControl,
-): ValidationErrors | null => {
-  const password = control.get('password');
-  const confirmPassword = control.get('confirmPassword');
-
-  return password && confirmPassword && password.value === confirmPassword.value
-    ? {passwordsMatch: true}
-    : null;
-};
-
-export class MyErrorStateMatcher implements ErrorStateMatcher {
-  /*isErrorState(control: FormControl | null, form: FormGroupDirective | NgForm | null): boolean {
-    const invalidCtrl = !!(control?.invalid && control?.parent?.dirty);
-    const invalidParent = !!(control?.parent?.invalid && control?.parent?.dirty);
-    return invalidCtrl || invalidParent;
-  }*/
-  isErrorState(control: FormControl, form: FormGroupDirective | NgForm | null): boolean {
-    return !!((control && control.touched && control.parent && control.parent.invalid));
   }
 }

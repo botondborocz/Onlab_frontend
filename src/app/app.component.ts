@@ -15,8 +15,3 @@ export class AppComponent {
 
 export const LOCALSTORAGE_TOKEN_KEY = 'goalzone-auth-token';
 export const LOCALSTORAGE_TYPE_KEY = 'goalzone-type';
-
-// specify tokenGetter for the angular jwt package
-export function getUserName() {
-  return localStorage.getItem(LOCALSTORAGE_TOKEN_KEY);
-}

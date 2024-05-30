@@ -37,21 +37,6 @@
         <div class="row">
           <div class="col-md-6">
             <mat-form-field class="full-width" appearance="outline" [style.width.px]=200>
-              <mat-label>Confirm password</mat-label>
-              <input formControlName="confirmPassword" matInput [errorStateMatcher]="matcher"
-                     (keydown.enter)="signup()">
-              @if (profileForm.errors?.['match_error'] && !profileForm.controls['confirmPassword'].errors?.['required']) {
-                <mat-error>Passwords do not match</mat-error>
-              }
-              @if (profileForm.controls['confirmPassword'].errors?.['required']) {
-                <mat-error>Field is <strong>required</strong></mat-error>
-              }
-            </mat-form-field>
-          </div>
-        </div>
-        <div class="row">
-          <div class="col-md-6">
-            <mat-form-field class="full-width" appearance="outline" [style.width.px]=200>
               <mat-label>First Name</mat-label>
               <input formControlName="firstName" matInput>
               @if (profileForm.controls['firstName'].errors?.['required']) {
@@ -76,13 +61,16 @@
           <label class="form-check-label" for="exampleCheck1">Sign up as admin</label>
         </div>
         <div>
-          <button type="button" class="btn btn-primary" (click)="signup()">Sign Up</button>
-          <button routerLink='/login' class="btn btn-secondary m-3">Login</button>
+          <button mat-raised-button
+                  class="save-button-light"
+                  (click)="signup()">Sign Up
+          </button>
+          <button mat-raised-button class="other-button-light"
+                  routerLink='/login'>Login
+          </button>
         </div>
       </mat-card-content>
     </mat-card>
 
   </form>
 </div>
-
-

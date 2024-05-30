@@ -14,18 +14,7 @@ import {MAT_DIALOG_DATA, MatDialogModule} from '@angular/material/dialog';
 import {MatCell, MatCellDef, MatColumnDef, MatHeaderCell, MatRow, MatRowDef, MatTable} from "@angular/material/table";
 import {ThemeService} from "../../../theme.service";
 import {NgClass} from "@angular/common";
-
-export interface Game {
-  id: number
-  homeScore: number
-  awayScore: number
-}
-
-export interface GameId {
-  gameId: number
-  homeTeamName: string
-  awayTeamName: string
-}
+import {Game, GameId, GameScore} from "../../../interfaces";
 
 @Component({
   selector: 'app-dialogcontentaddscore',
@@ -42,7 +31,6 @@ export interface GameId {
 export class DialogcontentaddscoreComponent {
   isDarkMode: boolean;
 
-  //id:number=0;
   constructor(private themeService: ThemeService, private formBuilder: FormBuilder, private http: HttpClient, private snackBar: MatSnackBar, @Inject(MAT_DIALOG_DATA) public data: GameId) {
     this.getGame();
     this.isDarkMode = this.themeService.isDarkMode();
@@ -56,6 +44,9 @@ export class DialogcontentaddscoreComponent {
     awayScore: new FormControl
   })
 
+  /**
+   * Retrieves the game details.
+   */
   getGame() {
     const gameId = {
       params: {"gameId": this.data.gameId}
@@ -68,17 +59,20 @@ export class DialogcontentaddscoreComponent {
     )
   }
 
+  /**
+   * Saves the new score for the game.
+   */
+
   save() {
     if (!this.gameForm.valid) {
       return;
     }
-    let gameData: Game = {
+    let gameData: GameScore = {
       id: this.data.gameId,
       homeScore: this.gameForm.value.homeScore,
       awayScore: this.gameForm.value.awayScore
     }
-    console.log(this.gameForm.value.homeScore);
-    this.http.post<Game>('/api/admin/newscore', gameData).subscribe({
+    this.http.post<GameScore>('/api/admin/newscore', gameData).subscribe({
       next: (response) => console.log(response),
       error: (error) => {
         (this.snackBar).open(

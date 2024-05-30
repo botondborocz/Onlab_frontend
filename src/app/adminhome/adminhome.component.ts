@@ -13,28 +13,15 @@ import {MatDialog,} from '@angular/material/dialog';
 import {MatTableDataSource, MatTableModule} from '@angular/material/table';
 import {
   DialogcontentaddgoalscorersComponent
-} from '../admindashboard/dialogcontent/dialogcontentaddgoalscorers/dialogcontentaddgoalscorers.component';
+} from './dialogcontent/dialogcontentaddgoalscorers/dialogcontentaddgoalscorers.component';
 import {MatDatepicker, MatDatepickerInput, MatDatepickerToggle} from "@angular/material/datepicker";
 import {MatNativeDateModule} from '@angular/material/core';
 import {MatFormField, MatSuffix} from "@angular/material/form-field";
 import {MatInput} from "@angular/material/input";
-import {
-  DialogcontentaddscoreComponent
-} from '../admindashboard/dialogcontent/dialogcontentaddscore/dialogcontentaddscore.component';
+import {DialogcontentaddscoreComponent} from './dialogcontent/dialogcontentaddscore/dialogcontentaddscore.component';
 import {ThemeService} from "../theme.service";
-import {
-  DialogcontentaddgameComponent
-} from "../admindashboard/dialogcontent/dialogcontentaddgame/dialogcontentaddgame.component";
-
-export interface Game {
-  id: number
-  homeTeamName: string
-  awayTeamName: string
-  homeScore: number
-  awayScore: number
-  championship: string
-  date: Date
-}
+import {DialogcontentaddgameComponent} from "./dialogcontent/dialogcontentaddgame/dialogcontentaddgame.component";
+import {Game} from "../interfaces";
 
 @Component({
   selector: 'app-adminhome',
@@ -50,16 +37,18 @@ export interface Game {
 })
 export class AdminhomeComponent {
   games = new MatTableDataSource<Game>();
-  columnsToDisplay = ["date", "homeTeamName", "homeScore", "awayScore", "awayTeamName", "score", "goalscorers"];
+  columnsToDisplay = ["date", "homeTeamName", "homeScore", "awayScore", "awayTeamName", "score", "goalscorers", "delete"];
   isDarkMode: boolean;
 
   constructor(private themeService: ThemeService, private authService: AuthService, private router: Router, private dialog: MatDialog, private http: HttpClient) {
     this.isDarkMode = this.themeService.isDarkMode();
-    this.getDatafromBackEnd();
+    this.getDataFromBackEnd();
   }
 
-
-  getDatafromBackEnd() {
+  /**
+   * Retrieves game data for every game from the backend.
+   */
+  getDataFromBackEnd() {
     this.http.get<Game[]>("/api/general/allgames").subscribe(
       games => {
         console.log(games);
@@ -68,51 +57,91 @@ export class AdminhomeComponent {
     )
   }
 
+  /**
+   * Opens a dialog to add or update the score for a game.
+   * @param game - The game for which the score is to be added or updated.
+   */
   openDialogForScore(game: Game) {
     const dialogRef = this.dialog.open(DialogcontentaddscoreComponent, {
       data: {gameId: game.id, homeTeamName: game.homeTeamName, awayTeamName: game.awayTeamName}
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      this.getDatafromBackEnd();
+      this.getDataFromBackEnd();
     });
   }
 
+  /**
+   * Opens a dialog to add goalscorers for a game.
+   * @param game - The game for which the goalscorers are to be added.
+   */
   openDialogForGoalscorers(game: Game) {
     const dialogRef = this.dialog.open(DialogcontentaddgoalscorersComponent, {
       data: {gameId: game.id, homeTeamName: game.homeTeamName, awayTeamName: game.awayTeamName}
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      this.getDatafromBackEnd();
+      this.getDataFromBackEnd();
     });
   }
 
+  /**
+   * Opens a dialog to add a new game.
+   */
   openDialogForGame() {
     const dialogRef = this.dialog.open(DialogcontentaddgameComponent);
 
     dialogRef.afterClosed().subscribe(result => {
-      //TODO refresh after closing
       console.log(`Dialog result: ${result}`);
-      this.getDatafromBackEnd();
+      this.getDataFromBackEnd();
     });
   }
 
+  /**
+   * Deletes a game.
+   * @param game - The game to be deleted.
+   */
+  deleteGame(game: Game) {
+    const gameId = {
+      params: {"gameId": game.id}
+    }
+    this.http.delete("/api/admin", gameId).subscribe({
+      error: error => {
+        console.error('There was an error!', error);
+      },
+      complete: () => {
+        this.getDataFromBackEnd()
+      }
+    });
+  }
+
+  /**
+   * Toggles between light and dark theme.
+   */
   public toggleTheme() {
     this.isDarkMode = !this.isDarkMode;
     this.themeService.setDarkMode(this.isDarkMode);
   }
 
+  /**
+   * Navigates to the admin home page.
+   */
   gohome() {
     this.router.navigate(['/admin/home']);
   }
 
+  /**
+   * Logs out the admin and navigates to the login page.
+   */
   logout() {
     this.authService.logout();
     this.router.navigate(['/login']);
     this.themeService.setDarkMode(false);
   }
 
+  /**
+   * Navigates to the user's account page.
+   */
   gotomyaccount() {
     this.router.navigate(['/admin/personaldata']);
   }

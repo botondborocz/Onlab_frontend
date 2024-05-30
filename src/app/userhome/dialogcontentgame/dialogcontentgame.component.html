@@ -1,21 +1,25 @@
 <head>
   <style>
     .item1 {
-      grid-area: header;
+      grid-area: header_left;
     }
 
     .item2 {
-      grid-area: left;
+      grid-area: header_right;
     }
 
     .item3 {
+      grid-area: left;
+    }
+
+    .item4 {
       grid-area: right;
     }
 
     .grid-container-light {
       display: grid;
       grid-template-areas:
-        'header header'
+        'header_left header_right'
         'left right';
       gap: 0px;
       padding: 10px;
@@ -25,7 +29,7 @@
     .grid-container-dark {
       display: grid;
       grid-template-areas:
-        'header header'
+        'header_left header_right'
         'left right';
       gap: 0px;
       padding: 10px;
@@ -45,15 +49,6 @@
     <div class="item1">
       <table mat-table [dataSource]="games" class="mat-elevation-z8">
 
-        <ng-container matColumnDef="homeFavourite">
-          <th mat-header-cell *matHeaderCellDef> Favourite</th>
-          <td mat-cell *matCellDef="let game">
-            <button mat-icon-button matSuffix (click)="changeHomeFavorite(game)">
-              <mat-icon>{{ game.homeFavorite ? 'favorite' : 'favorite_border' }}</mat-icon>
-            </button>
-          </td>
-        </ng-container>
-
         <ng-container matColumnDef="homeTeamName">
           <th mat-header-cell *matHeaderCellDef> Home team</th>
           <td mat-cell *matCellDef="let game"> {{ game.homeTeamName }}</td>
@@ -64,6 +59,11 @@
           <td mat-cell *matCellDef="let game"> {{ game.homeScore }}</td>
         </ng-container>
 
+        <tr mat-row *matRowDef="let myRowData; columns: columnsToDisplayGameHome;"></tr>
+      </table>
+    </div>
+    <div class="item2">
+      <table mat-table [dataSource]="games" class="mat-elevation-z8">
         <ng-container matColumnDef="awayScore">
           <th mat-header-cell *matHeaderCellDef> Score</th>
           <td mat-cell *matCellDef="let game"> {{ game.awayScore }}</td>
@@ -74,20 +74,10 @@
           <td mat-cell *matCellDef="let game"> {{ game.awayTeamName }}</td>
         </ng-container>
 
-        <ng-container matColumnDef="awayFavourite">
-          <th mat-header-cell *matHeaderCellDef> Favourite</th>
-          <td mat-cell *matCellDef="let game">
-            <button mat-icon-button matSuffix (click)="changeAwayFavorite(game)">
-              <mat-icon>{{ game.awayFavorite ? 'favorite' : 'favorite_border' }}</mat-icon>
-            </button>
-          </td>
-        </ng-container>
-
-
-        <tr mat-row *matRowDef="let myRowData; columns: columnsToDisplayGame;"></tr>
+        <tr mat-row *matRowDef="let myRowData; columns: columnsToDisplayGameAway;"></tr>
       </table>
     </div>
-    <div class="item2">
+    <div class="item3">
       <table mat-table [dataSource]="homeScorers" class="mat-elevation-z8">
 
         <ng-container matColumnDef="name">
@@ -100,7 +90,7 @@
         <tr mat-row *matRowDef="let myRowData; columns: columnsToDisplayHomeScorers;"></tr>
       </table>
     </div>
-    <div class="item3">
+    <div class="item4">
       <table mat-table [dataSource]="awayScorers" class="mat-elevation-z8">
 
         <ng-container matColumnDef="name">

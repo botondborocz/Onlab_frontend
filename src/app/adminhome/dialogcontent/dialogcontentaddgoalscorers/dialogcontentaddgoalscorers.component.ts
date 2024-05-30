@@ -11,32 +11,8 @@ import {MatIconModule} from '@angular/material/icon';
 import {MatSnackBar} from '@angular/material/snack-bar';
 import {ThemeService} from "../../../theme.service";
 import {NgClass} from "@angular/common";
+import {Game, GameId, NewScorer, Scorer} from "../../../interfaces";
 
-export interface Game {
-  id: number
-  homeScore: number
-  awayScore: number
-}
-
-export interface GameId {
-  gameId: number
-  homeTeamName: string
-  awayTeamName: string
-}
-
-export interface Scorer {
-  id: number
-  firstName: string
-  lastName: string
-}
-
-export interface NewScorer {
-  gameId: number
-  homeScorerId: number
-  awayScorerId: number
-  homeScore: number
-  awayScore: number
-}
 
 @Component({
   selector: 'app-dialogcontentaddgoalscorers',
@@ -80,6 +56,9 @@ export class DialogcontentaddgoalscorersComponent {
     awayScore: new FormControl
   })
 
+  /**
+   * Retrieves the game details.
+   */
   getGame() {
     const gameId = {
       params: {'gameId': this.data.gameId}
@@ -92,6 +71,9 @@ export class DialogcontentaddgoalscorersComponent {
     )
   }
 
+  /**
+   * Retrieves home scorers for the game.
+   */
   getHomeScorers() {
     const gameId = {
       params: {'gameId': this.data.gameId}
@@ -104,6 +86,9 @@ export class DialogcontentaddgoalscorersComponent {
     )
   }
 
+  /**
+   * Retrieves away scorers for the game.
+   */
   getAwayScorers() {
     const gameId = {
       params: {'gameId': this.data.gameId}
@@ -116,6 +101,9 @@ export class DialogcontentaddgoalscorersComponent {
     )
   }
 
+  /**
+   * Retrieves home players for the team.
+   */
   getHomePlayers() {
     const teamName = {
       params: {'teamName': this.data.homeTeamName}
@@ -128,6 +116,9 @@ export class DialogcontentaddgoalscorersComponent {
     )
   }
 
+  /**
+   * Retrieves away players for the team.
+   */
   getAwayPlayers() {
     const teamName = {
       params: {'teamName': this.data.awayTeamName}
@@ -140,8 +131,10 @@ export class DialogcontentaddgoalscorersComponent {
     )
   }
 
+  /**
+   * Saves the new goalscorer.
+   */
   save() {
-    //console.log(this.homeScorers[0].id);
     let scorerData: NewScorer = {
       gameId: this.data.gameId,
       homeScorerId: this.homeScorerForm.value.homeScorerId,
@@ -164,6 +157,5 @@ export class DialogcontentaddgoalscorersComponent {
       }
     });
   }
-
 }
 

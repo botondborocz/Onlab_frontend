@@ -17,15 +17,8 @@ import {MatMenu, MatMenuItem, MatMenuTrigger} from "@angular/material/menu";
 import {MatSlideToggle} from "@angular/material/slide-toggle";
 import {MatToolbar, MatToolbarRow} from "@angular/material/toolbar";
 import {AuthService} from "../auth.service";
+import {Profile} from "../interfaces";
 
-export interface Profile {
-  id: number
-  username: string;
-  password: string;
-  firstName: string;
-  lastName: string;
-  birthDate: Date;
-}
 
 @Component({
   selector: 'app-adminpersonaldata',
@@ -55,7 +48,6 @@ export class AdminpersonaldataComponent {
     this.username = localStorage.getItem(LOCALSTORAGE_TOKEN_KEY);
     this.isDarkMode = themeService.isDarkMode();
     this.getDatafromBackend();
-    this.setvalues();
   }
 
   profileForm = this.formBuilder.group({
@@ -66,8 +58,11 @@ export class AdminpersonaldataComponent {
     datepicker: this.oldBirthDate
   })
 
+  /**
+   * Retrieves the admin's personal data from the backend.
+   */
   getDatafromBackend() {
-    var responseData: Profile;
+    let responseData: Profile;
     this.http.get<Profile>(this.url + '/' + this.username).subscribe({
       next: (next) => {
         responseData = next;
@@ -81,10 +76,14 @@ export class AdminpersonaldataComponent {
         this.oldFirstName = responseData.firstName;
         this.oldLastName = responseData.lastName;
         this.oldBirthDate = responseData.birthDate;
+        this.setvalues();
       }
     });
   }
 
+  /**
+   * Sets the form values to the retrieved admin's personal data.
+   */
   setvalues() {
     this.profileForm.setValue({
       username: this.oldUsername,
@@ -95,38 +94,44 @@ export class AdminpersonaldataComponent {
     })
   }
 
+  /**
+   * Navigates to the admin dashboard home.
+   */
   gohome() {
     this.router.navigate(['/admin/home']);
   }
 
+  /**
+   * Toggles the theme between light and dark mode.
+   */
   public toggleTheme() {
     this.isDarkMode = !this.isDarkMode;
     this.themeService.setDarkMode(this.isDarkMode);
   }
 
+  /**
+   * Logs out the admin and navigates to the login page.
+   */
   logout() {
     this.authService.logout();
     this.router.navigate(['/login']);
     this.themeService.setDarkMode(false);
   }
 
-  show() {
-    this.getDatafromBackend();
-    this.setvalues();
-  }
-
-
+  /**
+   * Saves the modified admin's personal data.
+   */
   save() {
     if (!this.profileForm.valid) {
       return;
     }
     let profileData: Profile = {
       id: this.id,
-      username: this.profileForm.value.username != null ? this.profileForm.value.username : this.oldUsername,
-      password: this.profileForm.value.password != null ? this.profileForm.value.password : this.oldPassword,
-      firstName: this.profileForm.value.firstName != null ? this.profileForm.value.firstName : this.oldFirstName,
-      lastName: this.profileForm.value.lastName != null ? this.profileForm.value.lastName : this.oldLastName,
-      birthDate: this.profileForm.value.datepicker != null ? this.profileForm.value.datepicker : this.oldBirthDate,
+      username: this.profileForm.value.username ?? this.oldUsername,
+      password: this.profileForm.value.password ?? this.oldPassword,
+      firstName: this.profileForm.value.firstName ?? this.oldFirstName,
+      lastName: this.profileForm.value.lastName ?? this.oldLastName,
+      birthDate: this.profileForm.value.datepicker ?? this.oldBirthDate,
     }
     console.log(profileData);
     this.http.post<Profile>(this.url + '/' + this.username, profileData).subscribe({

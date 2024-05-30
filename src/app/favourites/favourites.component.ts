@@ -43,22 +43,28 @@ export class FavouritesComponent {
     this.isDarkMode = themeService.isDarkMode();
     this.username = localStorage.getItem(LOCALSTORAGE_TOKEN_KEY);
     this.getFavorites();
-    console.log("AAA")
-    if (this.favorites.length > 0) {
-      this.favorites[0].selected = true;
-    }
   }
 
+  /**
+   * Retrieves the user's favorite teams.
+   */
   public getFavorites() {
     this.http.get<Team[]>("/api/user/favoriteteams/" + this.username).subscribe(
       data => {
         console.log(data);
         this.favorites = data;
-        console.log(this.favorites.length)
+        if (this.favorites.length > 0) {
+          this.favorites[0].selected = true;
+          this.getFavoriteGames(this.favorites[0]);
+        }
       }
     )
   }
 
+  /**
+   * Retrieves the favorite games for the selected team.
+   * @param team - The selected team.
+   */
   public getFavoriteGames(team: Team) {
     this.favorites.forEach(function (team) {
       team.selected = false;
@@ -68,6 +74,10 @@ export class FavouritesComponent {
     this.getFavoriteGamesAfter(team);
   }
 
+  /**
+   * Retrieves the favorite games before today's date for the selected team.
+   * @param team - The selected team.
+   */
   public getFavoriteGamesBefore(team: Team) {
     const teamId = {
       params: {'teamId': team.id}
@@ -80,6 +90,10 @@ export class FavouritesComponent {
     )
   }
 
+  /**
+   * Retrieves the favorite games after today's date for the selected team.
+   * @param team - The selected team.
+   */
   public getFavoriteGamesAfter(team: Team) {
     const teamId = {
       params: {'teamId': team.id}
@@ -92,8 +106,11 @@ export class FavouritesComponent {
     )
   }
 
+  /**
+   * Opens a dialog to display detailed information about a game.
+   * @param game - The selected game.
+   */
   openDialogForGame(game: Game) {
-    console.log(game.date);
     const dialogRef = this.dialog.open(DialogcontentgameComponent, {
       data: {gameId: game.id}
     });
@@ -104,25 +121,40 @@ export class FavouritesComponent {
     });
   }
 
+  /**
+   * Toggles the theme between light and dark mode.
+   */
   public toggleTheme() {
     this.isDarkMode = !this.isDarkMode;
     this.themeService.setDarkMode(this.isDarkMode);
   }
 
+  /**
+   * Logs out the user and navigates to the login page.
+   */
   logout() {
     this.authService.logout();
     this.themeService.setDarkMode(false);
     this.router.navigate(['/login']);
   }
 
+  /**
+   * Navigates to the favorites page.
+   */
   gotofavs() {
     this.router.navigate(['/user/favourites']);
   }
 
+  /**
+   * Navigates to the user's account page.
+   */
   gotomyaccount() {
     this.router.navigate(['/user/personaldata']);
   }
 
+  /**
+   * Navigates to the user's home page.
+   */
   gohome() {
     this.router.navigate(['/user/home']);
   }
