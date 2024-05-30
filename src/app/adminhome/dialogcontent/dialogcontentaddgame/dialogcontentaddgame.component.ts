@@ -40,20 +40,16 @@ import {Championship, Game, Team} from "../../../interfaces"
   ]
 })
 export class DialogcontentaddgameComponent {
-  //TODO mat select drop down background
   id: number = 0;
   isDarkMode: boolean;
 
   constructor(private themeService: ThemeService, private formBuilder: FormBuilder, private http: HttpClient, private snackBar: MatSnackBar) {
-    //this.getTeams();
     this.getChampionships();
     this.isDarkMode = themeService.isDarkMode();
   }
 
-  options: Game[] = [];
   teams: Team[] = [];
   championships: Championship[] = [];
-  myDate: Date = new Date();
 
 
   gameForm = this.formBuilder.group({
@@ -65,15 +61,9 @@ export class DialogcontentaddgameComponent {
     championship: new UntypedFormControl(null, [])
   })
 
-  getTeams() {
-    this.http.get<Team[]>('/api/general/allteams').subscribe(
-      data => {
-        console.log(data);
-        this.teams = data;
-      }
-    )
-  }
-
+  /**
+   * Retrieves teams for the selected championship.
+   */
   getTeamsForChampionship() {
     const selectedChampionshipId = {
       params: {"championshipId": this.gameForm.value.championship}
@@ -86,6 +76,9 @@ export class DialogcontentaddgameComponent {
     )
   }
 
+  /**
+   * Retrieves all championships.
+   */
   getChampionships() {
     this.http.get<Championship[]>('/api/general/allchampionships').subscribe(
       data => {
@@ -96,11 +89,14 @@ export class DialogcontentaddgameComponent {
   }
 
 
+  /**
+   * Saves the new game.
+   */
   save() {
     if (!this.gameForm.valid) {
       return;
     }
-    var gameData: Game = {
+    let gameData: Game = {
       id: this.id,
       date: this.gameForm.value.datepicker,
       homeTeamName: this.gameForm.value.homeTeam.teamName,
@@ -125,5 +121,4 @@ export class DialogcontentaddgameComponent {
       }
     });
   }
-
 }

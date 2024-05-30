@@ -5,33 +5,29 @@ import {HttpClient} from '@angular/common/http';
 import {LoginResponse} from '../interfaces';
 import {MatSnackBar} from '@angular/material/snack-bar';
 import {LOCALSTORAGE_TOKEN_KEY, LOCALSTORAGE_TYPE_KEY} from '../app.component';
-import {AuthService} from '../auth.service';
 import {MatFormField, MatLabel, MatSuffix} from "@angular/material/form-field";
 import {MatInput} from "@angular/material/input";
 import {MatIcon} from "@angular/material/icon";
-import {MatIconButton} from "@angular/material/button";
+import {MatButton, MatIconButton} from "@angular/material/button";
 import {MatCard, MatCardContent, MatCardHeader, MatCardTitle} from "@angular/material/card";
+import {AuthService} from "../auth.service";
 
 @Component({
   selector: 'app-login',
   standalone: true,
-  imports: [RouterModule, ReactiveFormsModule, MatFormField, MatInput, MatLabel, MatIcon, MatIconButton, MatSuffix, MatCardTitle, MatCard, MatCardHeader, MatCardContent],
+  imports: [RouterModule, ReactiveFormsModule, MatFormField, MatInput, MatLabel, MatIcon, MatIconButton, MatSuffix, MatCardTitle, MatCard, MatCardHeader, MatCardContent, MatButton],
   templateUrl: './login.component.html',
   styleUrl: './login.component.scss',
   providers: []
 })
 export class LoginComponent {
-  //username: FormControl = new FormControl('')
-  //password: FormControl = new FormControl('')
-  //isAdmin: FormControl = new FormControl('')
   hide: boolean = true;
-  response: any
 
   constructor(private snackBar: MatSnackBar,
               private http: HttpClient,
               private router: Router,
-              private authService: AuthService,
-              private formBuilder: FormBuilder) {
+              private formBuilder: FormBuilder,
+              private authService: AuthService) {
   }
 
   profileForm = this.formBuilder.group({
@@ -51,7 +47,7 @@ export class LoginComponent {
       routerurl = '/user/home'
     }
 
-    var body = {
+    let body = {
       username: this.profileForm.value.username,
       password: this.profileForm.value.password
     }
@@ -80,5 +76,3 @@ export class LoginComponent {
     });
   }
 }
-
-

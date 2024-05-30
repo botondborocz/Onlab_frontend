@@ -1,55 +1,22 @@
 import {Component} from '@angular/core';
-import {Router, RouterModule, RouterOutlet} from '@angular/router';
-import {MatToolbarModule} from '@angular/material/toolbar';
-import {MatTabsModule} from '@angular/material/tabs';
-import {MatSlideToggleModule} from '@angular/material/slide-toggle';
-import {MatIconModule} from '@angular/material/icon';
-import {MatButtonModule} from '@angular/material/button';
-import {MatMenuModule} from '@angular/material/menu';
-import {AuthService} from '../auth.service';
-import {CommonModule} from '@angular/common';
-import {FormsModule} from '@angular/forms';
-import {MatInputModule} from '@angular/material/input';
-import {MatFormFieldModule} from '@angular/material/form-field';
-import {MatDialog,} from '@angular/material/dialog';
-import {HttpClient} from '@angular/common/http';
-import {MatTableModule} from '@angular/material/table';
 import {ThemeService} from "../theme.service";
+import {RouterOutlet} from "@angular/router";
 
 
 @Component({
   selector: 'app-admindashboard',
   standalone: true,
-  imports: [MatToolbarModule, RouterOutlet, RouterModule, MatIconModule,
-    MatButtonModule, CommonModule, MatTabsModule, MatSlideToggleModule,
-    MatMenuModule, MatFormFieldModule, MatInputModule, FormsModule,
-    MatButtonModule, MatTableModule],
+  imports: [
+    RouterOutlet
+  ],
   templateUrl: './admindashboard.component.html',
   styleUrl: './admindashboard.component.scss'
 })
 export class AdmindashboardComponent {
-  constructor(private themeService: ThemeService, private authService: AuthService, private router: Router, private dialog: MatDialog, private http: HttpClient) {
+  constructor(private themeService: ThemeService) {
     this.isDarkMode = themeService.isDarkMode();
   }
 
   isDarkMode: boolean;
 
-  public toggleTheme() {
-    this.isDarkMode = !this.isDarkMode;
-    this.themeService.setDarkMode(this.isDarkMode);
-  }
-
-  logout() {
-    this.authService.logout();
-    this.router.navigate(['/login']);
-  }
-
-  gotomyaccount() {
-    this.router.navigate(['/admin/personaldata']);
-  }
-
-  gohome() {
-    this.router.navigate(['/admin/home']);
-  }
 }
-

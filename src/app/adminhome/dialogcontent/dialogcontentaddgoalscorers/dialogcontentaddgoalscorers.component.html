@@ -112,7 +112,8 @@
         <div>
           <mat-form-field appearance="outline" class="form-field-style">
             <mat-label [ngClass]="{'text-for-dark-mode': isDarkMode}">Add goalscorer</mat-label>
-            <mat-select [panelClass]="{'mat-select-color-dark': isDarkMode}" style="color: white !important;"
+            <mat-select [panelClass]="{'mat-select-color-dark': isDarkMode}"
+                        [style.color]="isDarkMode ? 'white' : 'black'"
                         formControlName="homeScorerId">
               @for (player of homePlayers; track player) {
                 <mat-option [value]="player.id"> {{ player.firstName + ' ' + player.lastName }}</mat-option>
@@ -127,7 +128,8 @@
         <div>
           <mat-form-field appearance="outline" class="form-field-style">
             <mat-label [ngClass]="{'text-for-dark-mode': isDarkMode}">Add goalscorer</mat-label>
-            <mat-select [panelClass]="{'mat-select-color-dark': isDarkMode}" style="color: white !important;"
+            <mat-select [panelClass]="{'mat-select-color-dark': isDarkMode}"
+                        [style.color]="isDarkMode ? 'white' : 'black'"
                         formControlName="awayScorerId">
               @for (player of awayPlayers; track player) {
                 <mat-option [value]="player.id"> {{ player.firstName + ' ' + player.lastName }}</mat-option>

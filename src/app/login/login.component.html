@@ -31,12 +31,15 @@
           <label class="form-check-label" for="exampleCheck1">Login as admin</label>
         </div>
         <div>
-          <button id="loginbutton" type="button" class="btn btn-primary" (click)="login()">Login</button>
-          <button type="button" class="btn btn-secondary m-2" routerLink='/signup'>Sign Up</button>
+          <button mat-raised-button
+                  class="save-button-light"
+                  (click)="login()">Login
+          </button>
+          <button mat-raised-button class="other-button-light"
+                  routerLink='/signup'>Sign Up
+          </button>
         </div>
       </mat-card-content>
     </mat-card>
   </form>
 </div>
-
-

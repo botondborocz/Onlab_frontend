@@ -1,33 +1,9 @@
 /*
-Interface for the Refresh Token (can look different, based on your backend api)
+Interface for the Login Response
 */
-export interface RefreshToken {
-  id: number;
-  userId: number;
-  token: string;
-  refreshCount: number;
-  expiryDate: Date;
-}
-
-/*
-Interface for the Login Response (can look different, based on your backend api)
-*/
-// export interface LoginResponse {
-//   accessToken: string;
-//   refreshToken: RefreshToken;
-//   tokenType: string;
-// }
 export interface LoginResponse {
   username: string;
   type: string;
-}
-
-/*
-Interface for the Login Request (can look different, based on your backend api)
-*/
-export interface LoginRequest {
-  email: string;
-  password: string;
 }
 
 export interface User {
@@ -37,7 +13,7 @@ export interface User {
 }
 
 /*
-Interface for the Register Request (can look different, based on your backend api)
+Interface for the Register Request
 */
 export interface RegisterRequest {
   user: User;
@@ -45,7 +21,7 @@ export interface RegisterRequest {
 }
 
 /*
-Interface for the Register Response (can look different, based on your backend api)
+Interface for the Register Response
 */
 export interface RegisterResponse {
   status: number;
@@ -75,4 +51,39 @@ export interface Team {
   teamName: string
   championshipName: string
   selected: boolean
+}
+
+export interface GameId {
+  gameId: number
+  homeTeamName: string
+  awayTeamName: string
+}
+
+export interface GameScore {
+  id: number,
+  homeScore: number,
+  awayScore: number
+}
+
+export interface Scorer {
+  id: number
+  firstName: string
+  lastName: string
+}
+
+export interface NewScorer {
+  gameId: number
+  homeScorerId: number
+  awayScorerId: number
+  homeScore: number
+  awayScore: number
+}
+
+export interface Profile {
+  id: number
+  username: string;
+  password: string;
+  firstName: string;
+  lastName: string;
+  birthDate: Date;
 }

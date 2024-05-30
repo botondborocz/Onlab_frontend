@@ -22,7 +22,5 @@ export class ThemeService {
       document.body.classList.add("light-theme")
       document.body.classList.remove('dark-theme');
     }
-    //this.comp1.toggleTheme();
-    //this.comp2.toggleTheme();
   }
 }

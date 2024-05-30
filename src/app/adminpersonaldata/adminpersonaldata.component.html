@@ -1,5 +1,5 @@
 <nav>
-  <mat-toolbar class="custom-transition">
+  <mat-toolbar [ngClass]="{'light-theme': !isDarkMode, 'dark-theme': isDarkMode}">
     <mat-toolbar-row>
       <a>
         <button mat-icon-button class="example-icon" aria-label="Example icon-button with menu icon" (click)="gohome()">
@@ -98,9 +98,6 @@
           </button>
           <button mat-raised-button [ngClass]="{'other-button-dark': isDarkMode, 'other-button-light': !isDarkMode}"
                   (click)="gohome()">Cancel
-          </button>
-          <button mat-raised-button [ngClass]="{'other-button-dark': isDarkMode, 'other-button-light': !isDarkMode}"
-                  (click)="show()">Show current
           </button>
         </mat-card-actions>
       </div>

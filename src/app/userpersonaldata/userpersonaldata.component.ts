@@ -18,15 +18,7 @@ import {MatButtonModule, MatIconButton} from "@angular/material/button";
 import {MatToolbar, MatToolbarRow} from "@angular/material/toolbar";
 import {MatMenu, MatMenuItem, MatMenuTrigger} from "@angular/material/menu";
 import {AuthService} from "../auth.service";
-
-export interface Profile {
-  id: number
-  username: string;
-  password: string;
-  firstName: string;
-  lastName: string;
-  birthDate: Date;
-}
+import {Profile} from "../interfaces";
 
 @Component({
   selector: 'app-userpersonaldata',
@@ -49,7 +41,7 @@ export class PersonaldataComponent {
   oldFirstName: string = "";
   oldLastName: string = "";
   id: number = 0;
-  oldBirthDate: Date = new Date();
+  oldBirthDate: Date = new Date()
 
   url: string = '';
   username: string | null = ''
@@ -61,7 +53,6 @@ export class PersonaldataComponent {
     this.username = localStorage.getItem(LOCALSTORAGE_TOKEN_KEY);
     this.isDarkMode = themeService.isDarkMode();
     this.getDatafromBackend();
-    this.setvalues();
   }
 
   profileForm = this.formBuilder.group({
@@ -72,8 +63,11 @@ export class PersonaldataComponent {
     datepicker: this.oldBirthDate
   })
 
+  /**
+   * Retrieves the user's personal data from the backend.
+   */
   getDatafromBackend() {
-    var responseData: Profile;
+    let responseData: Profile;
     this.http.get<Profile>(this.url + '/' + this.username).subscribe({
       next: (next) => {
         responseData = next;
@@ -87,10 +81,14 @@ export class PersonaldataComponent {
         this.oldFirstName = responseData.firstName;
         this.oldLastName = responseData.lastName;
         this.oldBirthDate = responseData.birthDate;
+        this.setvalues();
       }
     });
   }
 
+  /**
+   * Sets the form values to the retrieved user's personal data.
+   */
   setvalues() {
     this.profileForm.setValue({
       username: this.oldUsername,
@@ -101,26 +99,21 @@ export class PersonaldataComponent {
     })
   }
 
-
-  show() {
-    this.getDatafromBackend();
-    this.setvalues();
-  }
-
-
+  /**
+   * Saves the modified user's personal data.
+   */
   save() {
     if (!this.profileForm.valid) {
       return;
     }
     let profileData: Profile = {
       id: this.id,
-      username: this.profileForm.value.username != null ? this.profileForm.value.username : this.oldUsername,
-      password: this.profileForm.value.password != null ? this.profileForm.value.password : this.oldPassword,
-      firstName: this.profileForm.value.firstName != null ? this.profileForm.value.firstName : this.oldFirstName,
-      lastName: this.profileForm.value.lastName != null ? this.profileForm.value.lastName : this.oldLastName,
-      birthDate: this.profileForm.value.datepicker != null ? this.profileForm.value.datepicker : this.oldBirthDate,
+      username: this.profileForm.value.username ?? this.oldUsername,
+      password: this.profileForm.value.password ?? this.oldPassword,
+      firstName: this.profileForm.value.firstName ?? this.oldFirstName,
+      lastName: this.profileForm.value.lastName ?? this.oldLastName,
+      birthDate: this.profileForm.value.datepicker ?? this.oldBirthDate,
     }
-    console.log(profileData);
     this.http.post<Profile>(this.url + '/' + this.username, profileData).subscribe({
       error: (error) => {
         (this.snackBar).open(
@@ -140,24 +133,32 @@ export class PersonaldataComponent {
   }
 
 
+  /**
+   * Logs out the user and navigates to the login page.
+   */
   logout() {
     this.authService.logout();
     this.themeService.setDarkMode(false);
     this.router.navigate(['/login']);
   }
 
+  /**
+   * Navigates to the favorites page.
+   */
   gotofavs() {
     this.router.navigate(['/user/favourites']);
   }
 
-  gotomyaccount() {
-    this.router.navigate(['/user/personaldata']);
-  }
-
+  /**
+   * Navigates to the home page.
+   */
   gohome() {
     this.router.navigate(['/user/home']);
   }
 
+  /**
+   * Toggles the theme between light and dark mode.
+   */
   toggleTheme() {
     this.isDarkMode = !this.isDarkMode;
     this.themeService.setDarkMode(this.isDarkMode);
